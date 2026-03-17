@@ -1,0 +1,27 @@
+# Building
+dist
+build
+.npm
+*.log
+
+# Tests
+test
+
+# Linting and formatting
+eslint.config.mjs
+
+# Configs
+.env*
+!.env.example
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Piqularities
+LICENSE
+README.md
+
+# Prisma
+prisma/migrations

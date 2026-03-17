@@ -1,0 +1,45 @@
+# Git
+./server/.git
+./server/.gitignore
+./server/.gitattributes
+
+# IDEs
+.idea
+.vscode*
+
+# Configs
+.env*
+
+# Dependencies
+**/node_modules
+
+# Builds
+./server/dist
+./server/prisma/migrations
+
+# Extra
+COMMANDS.md
+server/README.md
+server/LICENSE
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Tests
+*coverage
+*.nyc_output
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# iCloud
+*.icloud.*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+**/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

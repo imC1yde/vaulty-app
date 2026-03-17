@@ -1,0 +1,13 @@
+@theme {
+    --color-primary-text: #E8E8E8BA;
+    --color-secondary-text: #7ba6e1;
+    --color-faded-text: #6c6c6c;
+    --color-icon: #5A5A5AFF;
+
+    --color-primary-bg: #030313F2;
+    --color-secondary-bg: #121c35;
+
+    --color-main-border: #1e293b;
+    --color-main-outline: #0B4C7AA0;
+    --color-main-glow: #6366f1;
+}

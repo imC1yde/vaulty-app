@@ -1,0 +1,25 @@
+# Dependencies
+**/node_modules
+
+# Configs
+.env*
+.key
+.pem
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+**/Dockerfile
+docker-compose.(yml|yaml)
+.dockerignore
+
+# IDE
+.vscode
+.idea
+
+# Extra
+README.md
+LISENSE
