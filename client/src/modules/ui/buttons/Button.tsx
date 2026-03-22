@@ -1,15 +1,18 @@
 import type { INestable } from '@src/common/interfaces/nestable.interface.ts'
+import type { Nullable } from '@src/common/types/nullable.type.ts'
 import { motion } from 'framer-motion'
 import type { FC } from 'react'
 
 interface IButtonProps extends INestable {
   readonly onClickHandler: (...args: any[]) => void
+  readonly disabled?: Nullable<boolean>
 }
 
 const Button: FC<IButtonProps> = (props) => {
   return (
     <motion.button
       onClick={props.onClickHandler}
+      disabled={props.disabled ?? false}
       className="cursor-pointer flex flex-row items-center justify-center bg-secondary-bg p-2.5 rounded-xl transition-colors"
       initial={{
         outline: "0px solid #0B4C8A00",

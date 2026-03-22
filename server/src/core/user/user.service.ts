@@ -3,6 +3,7 @@ import { IDType } from '@src/common/enums/id-type.enum'
 import { User } from "@src/common/types/user.type"
 import type { Nullable } from '@src/common/utils/nullable.util'
 import { UserForAuth } from '@src/core/shared/types/user-for-auth.type'
+import { FindUserInput } from '@src/core/user/inputs/find-user.input'
 import { CreateUserInput } from '@src/core/user/shared/inputs/create-user.input'
 import { UpdateUserInput } from '@src/core/user/shared/inputs/update-user.input'
 import { userFields } from '@src/core/user/shared/utils/user-fields.util'
@@ -28,6 +29,21 @@ export class UserService {
       select: {
         ...userFields,
         password: true
+      }
+    })
+
+    return user
+  }
+
+  public async find(input: FindUserInput): Promise<Nullable<User>> {
+    const { email } = input
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: email
+      },
+      select: {
+        ...userFields
       }
     })
 

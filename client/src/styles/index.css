@@ -7,8 +7,6 @@
         margin: 0;
         padding: 0;
 
-        background-color: var(--color-primary-bg);
-
         font-family: 'Inter', sans-serif;
         color: var(--color-primary-text);
         -webkit-font-smoothing: antialiased;
@@ -30,5 +28,9 @@
         ::-webkit-scrollbar-thumb {
             @apply bg-slate-700 rounded-full hover:bg-slate-600 transition-colors;
         }
+    }
+
+    html {
+        background-color: var(--color-primary-bg);
     }
 }

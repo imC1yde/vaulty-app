@@ -4,8 +4,12 @@
     --color-faded-text: #6c6c6c;
     --color-icon: #5A5A5AFF;
 
-    --color-primary-bg: #030313F2;
-    --color-secondary-bg: #121c35;
+    --color-primary-bg: rgb(9, 9, 41);
+    --color-secondary-bg: #142242;
+
+    --color-gradient-start: #060b2c;
+    --color-gradient-mid: #2a1e45;
+    --color-gradient-end: #11182c;
 
     --color-main-border: #1e293b;
     --color-main-outline: #0B4C7AA0;
