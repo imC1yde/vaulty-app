@@ -1,6 +1,7 @@
-import { BASE_ROUTES } from '@src/common/constants/routes.constant.ts'
-import AuthPage from '@src/pages/Auth.page.tsx'
+import { APP_ROUTES, BASE_ROUTES } from '@src/common/constants/routes.constant.ts'
 import HomePage from '@src/pages/home-page/Home.page.tsx'
+import SignInPage from '@src/pages/sign-in-page/SignIn.page.tsx'
+import SignUpPage from '@src/pages/sign-up-page/SignUp.page.tsx'
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 
 export const routerSetup = [
@@ -10,8 +11,13 @@ export const routerSetup = [
     requiresAuth: false
   },
   {
-    path: BASE_ROUTES.AUTH,
-    element: <AuthPage/>,
+    path: APP_ROUTES.SIGN_UP,
+    element: <SignUpPage/>,
+    requiresAuth: false
+  },
+  {
+    path: APP_ROUTES.SIGN_IN,
+    element: <SignInPage/>,
     requiresAuth: false
   },
   // {

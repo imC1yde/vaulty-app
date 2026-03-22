@@ -1,4 +1,4 @@
-export const specifiedData: string[][] = [
+export const footerData: string[][] = [
   [ 'Данные предоставлены rawg.io', 'https://rawg.io' ],
   [ 'Текущее состояние приложения', 'В разработке' ],
   [ 'Создано в', '2026 г.' ]

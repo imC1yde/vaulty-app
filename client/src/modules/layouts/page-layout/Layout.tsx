@@ -1,6 +1,6 @@
 import type { INestable } from '@src/common/interfaces/nestable.interface.ts'
-import Footer from '@src/modules/layouts/footer/Footer.tsx'
-import Header from '@src/modules/layouts/header/Header.tsx'
+import Footer from '@src/modules/layouts/page-layout/footer/Footer.tsx'
+import Header from '@src/modules/layouts/page-layout/header/Header.tsx'
 import { type FC } from 'react'
 
 interface ILayoutProps extends INestable {}

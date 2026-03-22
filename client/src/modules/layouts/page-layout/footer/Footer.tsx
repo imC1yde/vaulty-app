@@ -1,5 +1,5 @@
-import FooterRow from '@src/modules/layouts/footer/FooterRow.tsx'
-import { specifiedData } from '@src/modules/layouts/footer/specifiedData.ts'
+import { footerData } from '@src/modules/layouts/page-layout/footer/footer-data.ts'
+import FooterRow from '@src/modules/layouts/page-layout/footer/FooterRow.tsx'
 import { type FC } from 'react'
 
 const Footer: FC = () => {
@@ -8,7 +8,7 @@ const Footer: FC = () => {
       <div className="w-full max-w-2xl overflow-hidden">
         <table className="mx-auto border-separate border-spacing-y-1 text-xs font-normal">
           <tbody className="divide-y divide-transparent">
-          {specifiedData.map(([ label, value ], i) => (
+          {footerData.map(([ label, value ], i) => (
             <FooterRow key={i} label={label} value={value} isLink={value.includes('http')}/>
           ))}
           </tbody>

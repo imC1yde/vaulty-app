@@ -19,10 +19,10 @@ const FeatureBlock: FC<IFeatureBlockProps> = (props) => {
       }`}
     >
       <div className="w-full md:w-1/2">
-        <div className={`aspect-video rounded-3xl border border-white/5 overflow-hidden shadow-2xl flex items-center justify-center`}>
-              <span className="text-slate-500 font-mono text-sm uppercase tracking-tighter">
-                {props.feature.img}
-              </span>
+        <div className="aspect-square overflow-hidden shadow-2xl flex items-center justify-center backdrop-blur">
+          <span className="text-[18rem] font-bold text-main-glow/55 font-mono select-none overflow-hidden">
+            {props.index + 1}
+          </span>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
-import { navbarTabs } from '@src/modules/layouts/header/navbar-tabs.ts'
-import NavbarTab from '@src/modules/layouts/header/NavbarTab.tsx'
+import { navbarData } from '@src/modules/layouts/page-layout/header/navbar-data.ts'
+import NavbarTab from '@src/modules/layouts/page-layout/header/NavbarTab.tsx'
 import Button from '@src/modules/ui/buttons/Button.tsx'
-import { LogInIcon } from 'lucide-react'
+import { LogInIcon, MenuIcon } from 'lucide-react'
 import { type FC, memo } from 'react'
 
 interface IAsideMenuProps {
@@ -14,22 +14,21 @@ const AsideMenu: FC<IAsideMenuProps> = memo((props) => {
     <aside className="fixed inset-0 z-[100] flex justify-end">
 
       <div
-        className="absolute inset-0 bg-secondary-bg/60 backdrop-blur-sm"
+        className="absolute inset-0 backdrop-blur-sm"
         onClick={() => props.close()}
       />
 
-      <div className="relative w-[280px] h-full bg-slate-900 border-l border-white/5 p-6 flex flex-col shadow-2xl">
+      <div className="relative w-[280px] h-full border-l bg-secondary-bg/60 border-white/5 p-6 flex flex-col shadow-2xl">
 
-        <button
-          onClick={() => props.close()}
-          className="self-end p-2 text-slate-400 mb-8"
-        >
-          Закрыть
-        </button>
+        <div className="mb-4 flex justify-end">
+          <Button onClickHandler={props.close}>
+            <MenuIcon/>
+          </Button>
+        </div>
 
         <nav className="flex flex-col gap-6 mb-12">
           {
-            navbarTabs.map(([ label, link ], i) => (
+            navbarData.map(([ label, link ], i) => (
               <NavbarTab key={i} label={label} link={link}/>
             ))
           }
