@@ -1,0 +1,89 @@
+generator client {
+  provider      = "prisma-web-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URI")
+}
+
+// ---------------- USER --------------------
+model User {
+  id       String  @id @unique @default(uuid()) @db.Uuid
+  username String?
+  email    String  @unique
+  password String
+
+  items Item[] @relation(name: "users-items")
+
+  games GameInventory[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedUt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+// ---------------- CUSTOM INVENTORY --------------------
+model Item {
+  id String @id @unique @default(uuid())
+
+  name        String
+  image       String
+  description String?
+
+  user   User?   @relation(name: "users-items", fields: [userId], references: [id])
+  userId String? @map("user_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedUt DateTime @updatedAt @map("updated_at")
+
+  @@map("items")
+}
+
+// ---------------- GAME INVENTORY --------------------
+model Game {
+  id String @id @unique @default(uuid()) @db.Uuid()
+
+  rawgId          Int         @unique @map("rawg_id")
+  name            String
+  slug            String
+  description     String?     @db.Text
+  backgroundImage String?     @map("background_image")
+  rating          Float       @default(0)
+  released        DateTime?
+  esrbRating      EsrbRating?
+  genres          String[]    @default([])
+  platforms       String[]    @default([])
+
+  users GameInventory[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([rating])
+  @@map("games")
+}
+
+model GameInventory {
+  userId String @map("user_id") @db.Uuid
+  gameId String @map("game_id") @db.Uuid
+
+  user User @relation(fields: [userId], references: [id])
+  game Game @relation(fields: [gameId], references: [id])
+
+  isCompleted Boolean @default(false)
+
+  @@id([gameId, userId])
+  @@map("game_inventories")
+}
+
+enum EsrbRating {
+  EVERYONE         @map("Everyone")
+  EVERYONE_10_PLUS @map("Everyone 10+")
+  TEEN             @map("Teen")
+  MATURE           @map("Mature")
+  ADULTS_ONLY      @map("Adults Only")
+  RATING_PENDING   @map("Rating Pending")
+}

@@ -2,14 +2,17 @@ YELLOW := $(shell tput setaf 3)
 GREEN  := $(shell tput setaf 2)
 WHITE := $(shell tput sgr0)
 
-DC = docker compose -f docker-compose.yaml
+DC_DEV = docker compose -f docker-compose.dev.yaml
+DC_PROD = docker compose -f docker-compose.prod.yaml
 
-# Docker commands
 docker\:watch:
+
+	$(DC_DEV) watch
+
+docker\:start:
 	make docker:clean
 
-	@echo "$(YELLOW)[Docker]:[Watch] Starting watch mode$(WHITE)"
-	$(DC) watch
+	$(DC_PROD)
 
 docker\:clean:
 	@echo "$(YELLOW)[Docker]:[Clean] Removing all containers$(WHITE)"

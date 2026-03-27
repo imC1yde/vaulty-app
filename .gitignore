@@ -1,37 +1,30 @@
-# Git
-./server/.git
-./server/.gitignore
-./server/.gitattributes
+# Project
+*.turbo
 
 # IDEs
-.idea
-.vscode*
+*.idea
+*.vscode*
 
 # Configs
 .env*
 
 # Dependencies
 **/node_modules
+.pnpm-store
 
 # Builds
-./server/dist
-./server/prisma/migrations
+**/dist
+**/build
+**/migrations
 
 # Extra
-COMMANDS.md
-PROMPTS.md
-server/README.md
-server/LICENSE
+*COMMANDS.md
+*PROMPTS.md
 
 # Logs
 logs
 *.log
-npm-debug.log*
 pnpm-debug.log*
-
-# Tests
-*coverage
-*.nyc_output
 
 # Runtime data
 pids
@@ -40,7 +33,7 @@ pids
 *.pid.lock
 
 # iCloud
-*.icloud.*
+*.icloud*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 **/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

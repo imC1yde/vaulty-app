@@ -1,8 +1,9 @@
 # Dependencies
 **/node_modules
+.pnpm-store
 
 # Configs
-.env*
+../.env
 .key
 .pem
 
@@ -12,13 +13,17 @@
 .gitattributes
 
 # Docker
-**/Dockerfile
-docker-compose.(yml|yaml)
+*Dockerfile*
+deploy/docker-compose.dev.yaml
 .dockerignore
 
 # IDE
-.vscode
-.idea
+.vscode*
+.idea*
+
+# Generated output
+**/dist
+**/build
 
 # Extra
 README.md
