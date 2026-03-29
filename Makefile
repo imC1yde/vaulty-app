@@ -6,7 +6,6 @@ DC_DEV = docker compose -f docker-compose.dev.yaml
 DC_PROD = docker compose -f docker-compose.prod.yaml
 
 docker\:watch:
-
 	$(DC_DEV) watch
 
 docker\:start:

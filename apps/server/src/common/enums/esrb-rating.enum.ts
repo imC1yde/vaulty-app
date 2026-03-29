@@ -1,8 +1,4 @@
-import { registerEnumType } from '@nestjs/graphql'
-import { EsrbRating } from '@prisma/web'
+import { EsrbRating } from '@app/common'
+import { EsrbRating as PrismaEsrb } from '@prisma/client'
 
-registerEnumType(EsrbRating, {
-  name: 'EsrbRating'
-})
-
-export { EsrbRating }
+export type UnionEsrbRating = EsrbRating | PrismaEsrb

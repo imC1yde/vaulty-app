@@ -1,14 +1,14 @@
-import { Field, ObjectType } from "@nestjs/graphql";
-import type { Nullable } from "@src/common/utils/nullable.util";
+import { type Nullable, User as CommonUser } from '@app/common'
+import { Field, ObjectType } from "@nestjs/graphql"
 
 @ObjectType()
-export class User {
+export class User extends CommonUser {
   @Field(() => String)
-  id: string
+  declare id: string
 
   @Field(() => String, { nullable: true })
-  username: Nullable<string>
+  declare username: Nullable<string>
 
   @Field(() => String)
-  email: string
+  declare email: string
 }

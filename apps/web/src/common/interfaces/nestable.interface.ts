@@ -1,4 +1,4 @@
-import type { Nullable } from '@src/common/types/nullable.type.ts'
+import type { Nullable } from '@app/common'
 import type { ReactNode } from 'react'
 
 export interface INestable {

@@ -1,14 +1,14 @@
 import { useMutation } from '@apollo/client/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { APP_ROUTES } from '@src/common/constants/routes.constant.ts'
-import { ToastType } from '@src/common/constants/toast-type.constant.ts'
+import { AppRoutes } from '@src/common/enums/routes.enum.ts'
+import { ToastType } from '@src/common/enums/toast-type.enum.ts'
 import { AuthRequest } from '@src/core/features/requests/auth.request.ts'
 import { useProfileStore } from '@src/core/stores/profile.store.ts'
 import { useToastStore } from '@src/core/stores/toast.store.ts'
-import FormLayout from '@src/modules/layouts/form-layout/FormLayout.tsx'
-import Field from '@src/modules/ui/fields/Field.tsx'
-import ScreenLoader from '@src/modules/ui/loaders/ScreenLoader.tsx'
 import { type SignInSchema, signInSchema } from '@src/pages/sign-in-page/sign-in.schema.ts'
+import FormLayout from '@src/widgets/layouts/form-layout/FormLayout.tsx'
+import Field from '@src/widgets/ui/fields/Field.tsx'
+import ScreenLoader from '@src/widgets/ui/loaders/ScreenLoader.tsx'
 import { motion } from 'framer-motion'
 import { type FC } from 'react'
 import { useForm } from 'react-hook-form'
@@ -24,8 +24,8 @@ const SignInPage: FC = () => {
   const [ authorizeUser ] = useMutation(
     AuthRequest.AUTHORIZE,
     {
-      onCompleted: (_) => addToast('Вы успешно вошли в систему!', ToastType.Info),
-      onError: (error) => addToast(error.message || 'Ошибка авторизации!', ToastType.Error)
+      onCompleted: (_) => addToast('Вы успешно вошли в систему!', ToastType.INFO),
+      onError: (error) => addToast(error.message || 'Ошибка авторизации!', ToastType.ERROR)
     }
   )
 
@@ -41,7 +41,7 @@ const SignInPage: FC = () => {
       })
 
       const userData = (responseData as any).authorizeUser
-      if (!userData?.token) addToast('Токен не был получен!', ToastType.Error)
+      if (!userData?.token) addToast('Токен не был получен!', ToastType.ERROR)
       else setProfile(userData.token, userData.user)
 
       reset()
@@ -73,7 +73,7 @@ const SignInPage: FC = () => {
         <div className="flex flex-col gap-6 items-center">
           <h6 className="flex flex-row justify-center text-slate-500 text-xs">
             Впервые?
-            <Link className="px-1 text-secondary-text/90 font-bold hover:text-white transition-colors" to={APP_ROUTES.SIGN_UP}>
+            <Link className="px-1 text-secondary-text/90 font-bold hover:text-white transition-colors" to={AppRoutes.SIGN_UP}>
               Создайте аккаунт
             </Link>
           </h6>

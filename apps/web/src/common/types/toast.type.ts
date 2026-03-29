@@ -1,4 +1,4 @@
-import type { ToastType } from '@src/common/constants/toast-type.constant.ts'
+import type { ToastType } from '@src/common/enums/toast-type.enum.ts'
 
 export type Toast = {
   id: number

@@ -1,0 +1,8 @@
+{
+  "name": "@app/common",
+  "version": "1.0.0",
+  "description": "Bundle of shared types and strategies among applications.",
+  "packageManager": "pnpm@10.29.3",
+  "main": "./src/main.js",
+  "types": "./src/main.d.ts"
+}

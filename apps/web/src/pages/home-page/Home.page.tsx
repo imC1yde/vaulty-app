@@ -1,8 +1,8 @@
-import { APP_ROUTES } from '@src/common/constants/routes.constant.ts'
-import Layout from '@src/modules/layouts/page-layout/Layout.tsx'
-import ActionButton from '@src/modules/ui/buttons/ActionButton.tsx'
+import { AppRoutes } from '@src/common/enums/routes.enum.ts'
 import FeatureBlock from '@src/pages/home-page/FeatureBlock.tsx'
 import { featuresData } from '@src/pages/home-page/features-data.ts'
+import Layout from '@src/widgets/layouts/page-layout/Layout.tsx'
+import ActionButton from '@src/widgets/ui/buttons/ActionButton.tsx'
 import { motion } from 'framer-motion'
 import { type FC } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 const HomePage: FC = () => {
   const navigate = useNavigate()
 
-  const actionButtonHandler = () => navigate(APP_ROUTES.CUSTOM)
+  const actionButtonHandler = () => navigate(AppRoutes.CUSTOM)
 
   return (
     <Layout>
@@ -50,7 +50,7 @@ const HomePage: FC = () => {
               Готов начать свою коллекцию?
             </h2>
 
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col md:flex-row items-center justify-center py-2 gap-4">
               <ActionButton onClickHandler={actionButtonHandler}>
                 Создать коллекцию
               </ActionButton>

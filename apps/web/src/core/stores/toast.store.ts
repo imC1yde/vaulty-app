@@ -1,4 +1,4 @@
-import type { ToastType } from '@src/common/constants/toast-type.constant.ts'
+import type { ToastType } from '@src/common/enums/toast-type.enum.ts'
 import type { Toast } from '@src/common/types/toast.type.ts'
 import { create, type StoreApi, type UseBoundStore } from 'zustand'
 

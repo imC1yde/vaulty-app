@@ -1,39 +1,45 @@
+import { EsrbRating, Game as CommonGame, type Nullable, PartialGame as CommonPartialGame } from '@app/common'
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql'
-import { EsrbRating } from '@src/common/enums/esrb-rating.enum'
-import type { Nullable } from '@src/common/utils/nullable.util'
+import { InheritPaginated } from '@src/common/strategies/inherit-paginated.strategy'
 
 @ObjectType()
-export class Game {
+export class Game extends CommonGame {
   @Field(() => String)
-  id: string
+  declare id: string
 
   @Field(() => Int)
-  rawgId: number
+  declare rawgId: number
 
   @Field(() => String)
-  name: string
+  declare name: string
 
   @Field(() => Boolean)
-  isCompleted: boolean
+  declare isCompleted: boolean
 
   @Field(() => String, { nullable: true })
-  description: Nullable<string>
+  declare description: Nullable<string>
 
   @Field(() => String, { nullable: true })
-  backgroundImage: Nullable<string> // image 1200x400px
+  declare backgroundImage: Nullable<string>
 
   @Field(() => Float)
-  rating: number
+  declare rating: number
 
   @Field(() => Date, { nullable: true })
-  released: Nullable<Date>
+  declare released: Nullable<Date>
 
   @Field(() => EsrbRating, { nullable: true })
-  esrbRating?: Nullable<EsrbRating>
+  declare esrbRating?: Nullable<EsrbRating>
 
   @Field(() => [ String ])
-  genres: string[]
+  declare genres: string[]
 
   @Field(() => [ String ])
-  platforms: string[]
+  declare platforms: string[]
 }
+
+@ObjectType()
+export class PartialGame extends CommonPartialGame {}
+
+@ObjectType()
+export class PaginatedGames extends InheritPaginated(PartialGame) {}
