@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "web",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@apollo/client": "^4.1.6",
-    "@hookform/resolvers": "^5.2.2",
+    "@app/common": "workspace:*",
+    "@hookform/resolvers": "^4.1.3",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@tailwindcss/vite": "^4.2.1",
     "clsx": "^2.1.1",
@@ -43,6 +44,7 @@
     "globals": "^16.5.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "vite-tsconfig-paths": "^6.1.1"
   }
 }

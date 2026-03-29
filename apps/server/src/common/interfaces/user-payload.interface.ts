@@ -1,3 +1,6 @@
 export interface IUserPayload {
-  sub: string
+  sub: string,
+  iss: string,
+  aud: string,
+  iat: number
 }

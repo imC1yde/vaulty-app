@@ -1,17 +1,21 @@
-import { Field, ObjectType } from "@nestjs/graphql";
-import type { Nullable } from '@src/common/utils/nullable.util'
+import { type Nullable, UserCatalogItem as CommonUserCatalogItem } from '@app/common'
+import { Field, ObjectType } from '@nestjs/graphql'
+import { InheritPaginated } from '@src/common/strategies/inherit-paginated.strategy'
 
 @ObjectType()
-export class UserCatalogItem {
+export class UserCatalogItem extends CommonUserCatalogItem {
   @Field(() => String)
-  id: string
+  declare id: string
 
   @Field(() => String)
-  name: string
+  declare name: string
 
   @Field(() => String)
-  image: string
+  declare image: string
 
   @Field(() => String, { nullable: true })
-  description: Nullable<string>
+  declare description: Nullable<string>
 }
+
+@ObjectType()
+export class PaginatedItems extends InheritPaginated(UserCatalogItem) {}

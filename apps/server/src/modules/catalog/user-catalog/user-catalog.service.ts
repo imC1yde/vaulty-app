@@ -1,0 +1,178 @@
+import { type Nullable } from '@app/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { PaginatedItems, UserCatalogItem } from '@src/common/types/user-catalog-item.type'
+import { CreateItemInput } from "@src/modules/catalog/user-catalog/inputs/create-item.input"
+import { GetAllItemsInput } from '@src/modules/catalog/user-catalog/inputs/get-all-items.input'
+import { UpdateItemInput } from '@src/modules/catalog/user-catalog/inputs/update-item.input'
+import { PrismaProvider } from "@src/modules/infrastructure/prisma/prisma.provider"
+import { RedisService } from '@src/modules/infrastructure/redis/redis.service'
+import { S3Service } from '@src/modules/infrastructure/s3/s3.service'
+import { FileUpload } from 'graphql-upload-ts'
+
+@Injectable()
+export class UserCatalogService {
+  constructor(
+    private readonly prisma: PrismaProvider,
+    private readonly redis: RedisService,
+    private readonly s3Service: S3Service
+  ) {}
+
+  public async getAll(userId: string, input: GetAllItemsInput): Promise<PaginatedItems> {
+    const { page, pageSize } = input
+    const skip = pageSize * (page - 1)
+
+    const [ items, count ] = await Promise.all([
+      this.prisma.item.findMany({
+        where: {
+          userId: userId
+        },
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          description: true
+        },
+        take: pageSize,
+        skip: skip,
+        orderBy: {
+          name: 'asc'
+        }
+      }),
+      this.prisma.item.count({
+        where: {
+          userId: userId
+        }
+      })
+    ])
+
+    const totalPages = Math.ceil(count / pageSize)
+    const mappedItems = await Promise.all(
+      items.map(async item => {
+        const imageUrl = await this.s3Service.getImage(item.image)
+
+        return {
+          ...item,
+          image: imageUrl
+        }
+      }))
+
+    return {
+      data: mappedItems,
+      totalCount: count,
+      totalPages: totalPages,
+      hasNextPage: page < totalPages
+    }
+  }
+
+  public async getById(userId: string, id: string): Promise<Nullable<UserCatalogItem>> {
+    const cacheKey = `item-${userId}:${id}`
+    const cachedItem = await this.redis.get<UserCatalogItem>(cacheKey)
+    if (cachedItem) return cachedItem
+
+    let item = await this.prisma.item.findUnique({
+      where: {
+        id: id,
+        userId: userId
+      },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        description: true
+      }
+    })
+
+    if (!item) return null
+    const imageUrl = await this.s3Service.getImage(item.image)
+    item = {
+      ...item,
+      image: imageUrl
+    } as const
+
+    await this.redis.set<UserCatalogItem>(cacheKey, item)
+
+    return item
+  }
+
+  public async create(userId: string, input: CreateItemInput, image: FileUpload): Promise<UserCatalogItem> {
+    const { name, description } = input
+
+    const imageKey = await this.s3Service.uploadImage(userId, image)
+
+    const item = await this.prisma.item.create({
+      data: {
+        name: name,
+        image: imageKey,
+        description: description,
+        user: {
+          connect: {
+            id: userId
+          }
+        }
+      },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        description: true
+      }
+    })
+
+    return item
+  }
+
+  public async update(userId: string, input: UpdateItemInput, image: FileUpload): Promise<UserCatalogItem> {
+    const { id, name, description } = input
+
+    try {
+      const item = await this.prisma.item.update({
+        where: {
+          id: id,
+          userId: userId
+        },
+        data: {
+          name: name ?? undefined,
+          description: description
+        },
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          description: true
+        }
+      })
+
+      await this.s3Service.updateImage(item.image, image)
+
+      return item
+    } catch (error) {
+      throw new NotFoundException(`Item with ID ${id} not found`)
+    }
+  }
+
+  public async delete(userId: string, id: string): Promise<UserCatalogItem> {
+    try {
+      const item = await this.prisma.item.delete({
+        where: {
+          id: id,
+          userId: userId
+        },
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          description: true
+        }
+      })
+
+      await this.s3Service.delete(item.image)
+
+      const cacheKey = `item-${userId}:${id}`
+      await this.redis.delete(cacheKey)
+
+      return item
+    } catch (error) {
+      throw new NotFoundException(`Item with ID ${id} not found`)
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
-import { AppModule } from '@src/app.module'
-import { AppConfig } from '@src/infrastructure/config/app.config'
+import { AppModule } from '@src/modules/app.module'
+import { AppConfig } from '@src/modules/infrastructure/config/app.config'
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule)
@@ -10,7 +10,7 @@ async function bootstrap(): Promise<void> {
 
   // CORS settings
   app.enableCors({
-    origin: appConfig.originUrl,
+    origin: appConfig.webUrl,
     credentials: true
   })
 
