@@ -1,7 +1,4 @@
-# Project
-*.turbo
-
-# IDEs
+# Code redacrors
 *.idea
 *.vscode*
 
@@ -10,12 +7,11 @@
 
 # Dependencies
 **/node_modules
-.pnpm-store
 
 # Builds
-**/dist
-**/build
-apps/server/prisma/migrations
+**dist
+**build
+**migrations
 
 # Extra
 *COMMANDS.md
@@ -25,6 +21,8 @@ apps/server/prisma/migrations
 logs
 *.log
 pnpm-debug.log*
+*tsconfig.tsbuildinfo
+**/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Runtime data
 pids
@@ -34,6 +32,3 @@ pids
 
 # iCloud
 *.icloud*
-
-# Diagnostic reports (https://nodejs.org/api/report.html)
-**/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

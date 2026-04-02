@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "target": "ES2022",
+    "target": "ES2021",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "strict": true,
     "composite": true,
@@ -13,9 +13,6 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "baseUrl": ".",
     "paths": {
       "@app/common": ["./packages/common/src/main.ts"],
       "@app/common/*": ["./packages/common/src/*"]

@@ -1,0 +1,9 @@
+import type { Nullable } from '@src/common/utilities/nullable.util.ts'
+
+export interface IUserCatalogItem {
+  id: string
+  name: string
+  image: string
+  description: Nullable<string>
+}
+

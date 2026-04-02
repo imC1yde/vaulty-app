@@ -1,0 +1,15 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<linearGradient id="vaultySharpGradient" x1="0" y1="32" x2="64" y2="32" gradientUnits="userSpaceOnUse">
+			<stop stop-color="#007BFF"/> <stop offset="0.5" stop-color="#3b82f6"/> <stop offset="1" stop-color="#6F42C1"/> </linearGradient>
+	</defs>
+
+	<path
+	d="M14 -20L32 58L50 -20"
+	stroke="url(#vaultySharpGradient)"
+	stroke-width="16"
+	stroke-linecap="butt"
+	stroke-linejoin="miter"
+	stroke-miterlimit="4"
+	/>
+</svg>
