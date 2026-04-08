@@ -102,6 +102,8 @@ export class UserCatalogService {
 
     const imageKey = await this.s3Service.uploadImage(userId, image)
 
+    await this.redis.deleteByPattern(RedisService.Patterns.ITEMS)
+
     return await this.prisma.item.create({
       data: {
         name: name,
@@ -150,7 +152,7 @@ export class UserCatalogService {
 
       return item
     } catch (error) {
-      throw new NotFoundException(`Item with ID ${id} not found`)
+      throw new NotFoundException(`Item not found`)
     }
   }
 
@@ -175,7 +177,7 @@ export class UserCatalogService {
 
       return item
     } catch (error) {
-      throw new NotFoundException(`Item with ID ${id} not found`)
+      throw new NotFoundException(`Item not found`)
     }
   }
 }

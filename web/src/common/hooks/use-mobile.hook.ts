@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
 
-export const useMobile = () => {
-  const [ isMobile, setIsMobile ] = useState(false)
+export const useBreakpoint = () => {
+  const [ width, setWidth ] = useState(window.innerWidth)
 
   useEffect(() => {
-    const mql = window.matchMedia('(max-width: 768px)')
-    const onChange = () => setIsMobile(mql.matches)
-
-    mql.addEventListener('change', onChange)
-    setIsMobile(mql.matches)
-
-    return () => mql.removeEventListener('change', onChange)
+    const handleResize = () => setWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  return isMobile
+  const isMobile = width < 640
+  const isTablet = width >= 640 && width < 1024
+  const isDesktop = width >= 1024
+
+  return { isMobile, isTablet, isDesktop }
 }

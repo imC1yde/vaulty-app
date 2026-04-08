@@ -44,6 +44,8 @@ export class S3Provider implements OnModuleInit {
 
   // @Use Only for module initialization
   public async onModuleInit(): Promise<void> {
+    if (process.env.SKIP_CONNECTIONS === 'true') return
+
     await this.createBucket(this.bucket)
 
     await this.setPolicy()
@@ -75,7 +77,7 @@ export class S3Provider implements OnModuleInit {
 
       return key
     } catch (error) {
-      throw new BadRequestException(`[Error]:[S3] File has not uploaded! ${error.message}`)
+      throw new BadRequestException(`File has not uploaded!`)
     }
   }
 
@@ -116,7 +118,7 @@ export class S3Provider implements OnModuleInit {
 
       return true
     } catch (error) {
-      throw new NotFoundException(`[Error]:[S3] File has not found to update! ${error.message}`)
+      throw new NotFoundException(`File has not found to update!`)
     }
   }
 
@@ -132,7 +134,7 @@ export class S3Provider implements OnModuleInit {
 
       return true
     } catch (error) {
-      throw new NotFoundException(`[Error]:[S3] File has not found to delete! ${error.message}`)
+      throw new NotFoundException(`File has not found to delete!`)
     }
   }
 
@@ -181,7 +183,7 @@ export class S3Provider implements OnModuleInit {
     try {
       await this.client.send(command)
     } catch (error) {
-      throw new InternalServerErrorException(`[Log]:[S3] Policy has not been sent! ${error} [Error]`)
+      throw new InternalServerErrorException(`Policy has not been sent!`)
     }
   }
 }

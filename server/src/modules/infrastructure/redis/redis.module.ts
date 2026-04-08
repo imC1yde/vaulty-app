@@ -8,12 +8,20 @@ import { redisStore } from 'cache-manager-redis-yet'
   imports: [
     CacheModule.registerAsync({
       inject: [ RedisConfig ],
-      useFactory: async (config: RedisConfig) => ({
-        store: await redisStore({
-          url: `redis://${config.host}:${config.port}`,
-          ttl: 3_600_000
-        })
-      })
+      useFactory: async (config: RedisConfig) => {
+        if (process.env.SKIP_CONNECTIONS === 'true') {
+          return {
+            ttl: 3_600_00
+          }
+        }
+
+        return {
+          store: await redisStore({
+            url: `redis://${config.host}:${config.port}`,
+            ttl: 3_600_000
+          })
+        }
+      }
     })
   ],
   providers: [

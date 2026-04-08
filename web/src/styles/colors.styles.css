@@ -13,6 +13,7 @@
     --color-accent: #6366f1;
     --color-accent-glow: #6366F166;
     --color-faded-dark: #020618;
+    --color-danger: #e33f35;
 
     --color-gradient-start: #091133;
     --color-gradient-mid: #20073a;
@@ -21,6 +22,7 @@
     --color-main-border: #1e293b;
     --color-main-outline: #0B4C7AA0;
     --color-main-glow: #6366f1;
+    --color-softy: #7087ea;
     --color-subtle-border: #FFFFFF0C;
 
     --color-track-scroll: #0b0f2a;

@@ -16,16 +16,16 @@ class Application {
     this.setupGlobals(app)
     this.setupCors(app, appConfig)
 
-    await app.listen(appConfig.port)
+    await app.listen(appConfig.port, '0.0.0.0')
 
-    this.logger.log(`🚀 Server is running on: http://localhost:${appConfig.port}/graphql`)
+    this.logger.log(`Server is running on: http://0.0.0.0:${appConfig.port}`)
   }
 
   private static setupCors(app, config: AppConfig) {
     app.enableCors({
       origin: config.webUrl,
       credentials: true
-    });
+    })
   }
 
   private static setupMiddleware(app) {
@@ -42,7 +42,7 @@ class Application {
           enableImplicitConversion: true
         }
       })
-    );
+    )
   }
 }
 

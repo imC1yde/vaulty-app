@@ -62,6 +62,8 @@ export class GameCatalogService {
       }
     })
 
+    await this.redis.deleteByPattern(RedisService.Patterns.GAMES)
+
     return mapGame({
       data: game,
       isCompleted: inventory.isCompleted
@@ -183,7 +185,7 @@ export class GameCatalogService {
         isCompleted: inventory.isCompleted
       })
     } catch (error) {
-      throw new InternalServerErrorException(`Game updating failed. ${error}`)
+      throw new InternalServerErrorException(`Game updating failed.`)
     }
   }
 
@@ -208,7 +210,7 @@ export class GameCatalogService {
         isCompleted: inventory.isCompleted
       })
     } catch (error) {
-      throw new InternalServerErrorException(`Game deleting failed. ${error}`)
+      throw new InternalServerErrorException(`Game deleting failed.`)
     }
   }
 }

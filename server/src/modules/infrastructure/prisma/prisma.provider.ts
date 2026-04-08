@@ -7,10 +7,12 @@ export class PrismaProvider
   implements OnModuleInit, OnModuleDestroy {
 
   public async onModuleInit(): Promise<void> {
+    if (process.env.SKIP_CONNECTIONS === 'true') return
     await this.$connect()
   }
 
   public async onModuleDestroy(): Promise<void> {
+    if (process.env.SKIP_CONNECTIONS === 'true') return
     await this.$disconnect()
   }
 }

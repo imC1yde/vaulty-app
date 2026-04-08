@@ -17,8 +17,8 @@ export class RawgRequest {
   `
 
   public static readonly GET_PLATFORMS = gql`
-      query GetPlatforms($input: GetPlatformsInput!) {
-          getPlatforms(input: $input) {
+      query GetPlatforms($input: GetAllPlatformsInput!) {
+          getAllPlatforms(input: $input) {
               data
               totalPages
               totalCount
@@ -28,8 +28,8 @@ export class RawgRequest {
   `
 
   public static readonly GET_GENRES = gql`
-      query GetGenres($input: GetGenresInput!) {
-          getGenres(input: $input) {
+      query GetGenres($input: GetAllGenresInput!) {
+          getAllGenres(input: $input) {
               data
               totalPages
               totalCount

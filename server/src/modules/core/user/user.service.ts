@@ -19,7 +19,7 @@ export class UserService {
 
   public async getForAuth(email: string): Promise<Nullable<UserForAuth>> {
     const user = await this.getByEmail({ email: email })
-    if (!user) throw new NotFoundException('[Log]:[UserService] User does not exist [Error]')
+    if (!user) throw new NotFoundException('User does not exist')
 
     const password = (await this.getUserPassword(user.id))!
 
@@ -102,7 +102,7 @@ export class UserService {
     if (!hashed) throw new NotFoundException(`User not found`)
 
     const isValid = await verify(hashed, input.password)
-    if (!isValid) throw new ForbiddenException('[Log]:[User Service] Access Denied. Passwords does not match [Error]')
+    if (!isValid) throw new ForbiddenException('Access Denied. Passwords does not match')
 
     try {
       const user = await this.prisma.user.delete({

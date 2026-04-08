@@ -8,7 +8,7 @@ interface IProfileStore {
   isAuthorized: boolean
   isInitialized: boolean
   login: (user: IUser) => void
-  setAuth: (user: IUser) => void
+  setUser: (user: IUser) => void
   clearProfile: () => void
 }
 
@@ -22,10 +22,8 @@ export const useProfileStore = create<IProfileStore>()(persist((set) => {
         isAuthorized: true,
         isInitialized: true
       }),
-      setAuth: (user: IUser) => set({
-        user: user,
-        isAuthorized: true,
-        isInitialized: true
+      setUser: (user: IUser) => set({
+        user: user
       }),
       clearProfile: () => set({
         user: null,

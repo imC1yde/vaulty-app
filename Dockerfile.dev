@@ -22,4 +22,4 @@ COPY ./server ./
 RUN pnpm run db:generate --schema ./prisma/schema.prisma
 
 EXPOSE 3000
-CMD ["pnpm", "run", "dev"]
+CMD ["sh", "-c", "pnpm run db:migrate --name init && pnpm run dev"]

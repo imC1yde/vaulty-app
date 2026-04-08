@@ -89,7 +89,8 @@ export class RawgDomainService {
             params: {
               key: this.rawgConfig.accessKey,
               page: input.page,
-              page_size: input.pageSize
+              page_size: input.pageSize,
+              search: input.search
             }
           },
           {
@@ -116,7 +117,8 @@ export class RawgDomainService {
             params: {
               key: this.rawgConfig.accessKey,
               page: input.page,
-              page_size: input.pageSize
+              page_size: input.pageSize,
+              search: input.search
             }
           },
           {

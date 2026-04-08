@@ -1,8 +1,10 @@
 import { AppRoutes } from '@src/common/enums/routes.enum.ts'
-import { useMobile } from '@src/common/hooks/use-mobile.hook.ts'
-import AsideMenu from '@src/widgets/layouts/page-layout/header/components/AsideMenu.tsx'
+import { useBreakpoint } from '@src/common/hooks/use-mobile.hook.ts'
+import { useProfileStore } from '@src/core/stores/profile.store.ts'
 import NavbarTab from '@src/widgets/layouts/page-layout/header/components/NavbarTab.tsx'
 import { data } from '@src/widgets/layouts/page-layout/header/data.ts'
+import AsideMenu from '@src/widgets/layouts/page-layout/menu/AsideMenu.tsx'
+import UserMenu from '@src/widgets/layouts/page-layout/menu/UserMenu.tsx'
 import Button from '@src/widgets/ui/buttons/Button.tsx'
 import Logo from '@src/widgets/ui/logo/Logo.tsx'
 import { LogInIcon, MenuIcon } from 'lucide-react'
@@ -12,55 +14,76 @@ import { useNavigate } from 'react-router-dom'
 
 const Header: FC = () => {
   const navigate = useNavigate()
-  const isMobile = useMobile()
+  const { isMobile, isTablet } = useBreakpoint()
   const [ isOpen, setIsOpen ] = useState<boolean>(false)
+  const { isAuthorized, user } = useProfileStore()
 
   const signUpHandler = () => navigate(AppRoutes.SIGN_IN)
-
   const menuHandler = () => setIsOpen(prev => !prev)
 
   return (
     <header
       className="
-      fixed top-0 z-50 w-full h-auto py-3.5 px-8
-      flex flex-row justify-between items-center
-      bg-primary-bg/80 border-b border-main-border backdrop-blur-xl
-      transition-all"
+    fixed top-0 z-50 w-full py-3.5 px-8
+    grid grid-cols-3 items-center
+    bg-primary-bg/80 border-b border-main-border backdrop-blur-xl
+    transition-all"
     >
-      <Logo/>
+      <div className="flex justify-start">
+        <Logo/>
+      </div>
 
-      {
-        isMobile ?
+      <nav className="flex flex-row gap-12 lg:gap-24 items-center justify-center">
+        {!(isMobile || isTablet) && data.map(([ label, link ], i) => (
+          <NavbarTab key={i} link={link}>
+            {label}
+          </NavbarTab>
+        ))}
+      </nav>
+
+      <div className="flex justify-end items-center gap-4">
+        {(isMobile || isTablet) ? (
           <>
+            {isAuthorized && (
+              <div className="flex flex-col items-end mr-2">
+            <span className="text-xs font-bold text-white tracking-wide uppercase opacity-80">
+              {user?.username || user?.email}
+            </span>
+                <span className="text-[9px] text-faded-text/85 font-medium uppercase tracking-[0.2em]">
+              Личный кабинет
+            </span>
+              </div>
+            )}
             <Button onClick={menuHandler} className="p-2">
               <MenuIcon/>
             </Button>
-
-            {isOpen && createPortal(
-              <AsideMenu close={() => setIsOpen(false)} signUpHandler={signUpHandler}/>,
-              document.body
-            )}
           </>
-          :
-          <>
-            <nav className="flex flex-row gap-12 lg:gap-40 items-center justify-center">
-              {data.map(([ label, link ], i) => (
-                <NavbarTab key={i} link={link}>
-                  {label}
-                </NavbarTab>
-              ))}
-            </nav>
+        ) : (
+          isAuthorized ? (
+            <>
+              <div className="flex flex-col items-end mr-2">
+            <span className="text-xs font-bold text-white tracking-wide uppercase opacity-80">
+              {user?.username || user?.email}
+            </span>
+                <span className="text-[9px] text-faded-text/85 font-medium uppercase tracking-[0.2em]">
+              Личный кабинет
+            </span>
+              </div>
+              <UserMenu/>
+            </>
+          ) : (
+            <Button onClick={signUpHandler}>
+              <span className="text-sm font-medium tracking-wide">Войти</span>
+              <LogInIcon size={18}/>
+            </Button>
+          )
+        )}
+      </div>
 
-            <div className="flex flex-row items-center gap-4">
-              <Button
-                onClick={signUpHandler}
-              >
-                <span className="text-sm font-medium tracking-wide">Войти</span>
-                <LogInIcon size={18}/>
-              </Button>
-            </div>
-          </>
-      }
+      {(isMobile || isTablet) && isOpen && createPortal(
+        <AsideMenu close={() => setIsOpen(false)} signUpHandler={signUpHandler}/>,
+        document.body
+      )}
     </header>
   )
 }
