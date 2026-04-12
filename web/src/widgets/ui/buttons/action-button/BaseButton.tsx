@@ -39,7 +39,7 @@ const BaseButton: FC<IBaseButtonProps> =
 
         <span className="relative z-10 flex items-center justify-center gap-2 tracking-wider uppercase text-[11px] pointer-events-none shrink-0">
         {isLoading ? <div className="animate-spin">...</div> : children}
-      </span>
+        </span>
 
         <div className="absolute inset-0 border border-white/5 rounded-xl pointer-events-none group-hover:border-white/20 transition-colors z-20"/>
       </motion.button>

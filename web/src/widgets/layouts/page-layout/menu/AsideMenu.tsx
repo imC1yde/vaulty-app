@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client/react'
 import { ToastType } from '@src/common/enums/toast-type.enum.ts'
+import { useBreakpoint } from '@src/common/hooks/use-mobile.hook.ts'
 import { useMutationForm } from '@src/common/hooks/use-mutation-form.hook.ts'
 import { AuthRequest } from '@src/core/features/requests/auth.request.ts'
 import { UserRequest } from '@src/core/features/requests/user.request.ts'
@@ -24,8 +25,9 @@ interface IAsideMenuProps {
 
 const AsideMenu: FC<IAsideMenuProps> = memo((props) => {
   const [ isDeleting, setIsDeleting ] = useState<boolean>(false)
-  const { clearProfile, setUser, isAuthorized } = useProfileStore()
+  const { clearProfile, setUser, isAuthorized, user } = useProfileStore()
   const { addToast } = useToastStore()
+  const { isMobile } = useBreakpoint()
 
   const [ logout, { loading: logoutLoading } ] = useMutation(AuthRequest.SIGN_OUT, {
     onCompleted: () => {
@@ -106,6 +108,19 @@ const AsideMenu: FC<IAsideMenuProps> = memo((props) => {
         <div className="mt-auto pt-6 border-t border-main-border/50">
           {isAuthorized ? (
             <div className="space-y-6">
+
+              {isMobile && (
+                <div className="flex flex-col items-center text-center gap-1 mb-6">
+                  <span className="text-sm font-bold text-white tracking-wide uppercase opacity-90">
+                    {user?.username || user?.email}
+                  </span>
+                  <span className="text-[10px] text-accent font-medium uppercase tracking-[0.2em]">
+                    Личный кабинет
+                  </span>
+
+                  <div className="w-full h-[1px] bg-faded-text/40 mt-4"/>
+                </div>
+              )}
 
               <div className="space-y-4">
                 <form onSubmit={updateUsername.onSubmit} className="flex flex-col gap-2">

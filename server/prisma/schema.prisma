@@ -33,7 +33,7 @@ model Item {
   image       String
   description String?
 
-  user   User?   @relation(name: "users-items", fields: [userId], references: [id])
+  user   User?   @relation(name: "users-items", fields: [userId], references: [id], onDelete: Cascade)
   userId String? @map("user_id") @db.Uuid
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -70,7 +70,7 @@ model GameInventory {
   userId String @map("user_id") @db.Uuid
   gameId String @map("game_id") @db.Uuid
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   game Game @relation(fields: [gameId], references: [id])
 
   isCompleted Boolean @default(false)

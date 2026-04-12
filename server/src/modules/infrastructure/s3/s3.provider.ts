@@ -52,7 +52,7 @@ export class S3Provider implements OnModuleInit {
   }
 
   // @returns A unique filename key for stored file
-  public async upload(userId: string, stream: ReadStream, filename: string): Promise<string> {
+  public async upload(userId: string, stream: ReadStream, filename: string, contentType: string): Promise<string> {
     const key = `${uuidV4()}-${Date.now()}`
 
     const process = new Upload({
@@ -61,7 +61,7 @@ export class S3Provider implements OnModuleInit {
         Bucket: this.bucket,
         Key: key,
         Body: stream,
-        ContentType: 'image',
+        ContentType: contentType,
         Metadata: {
           userId: userId,
           originFilename: filename
@@ -94,19 +94,19 @@ export class S3Provider implements OnModuleInit {
       { expiresIn: 3600 }
     )
 
-    return url
+    return url.replace('s3:9000', this.appConfig.host)
   }
 
   // Update file by key
   // @returns True if updated successfully
-  public async update(stream: ReadStream, key: string): Promise<boolean> {
+  public async update(stream: ReadStream, key: string, contentType: string): Promise<boolean> {
     const process = new Upload({
       client: this.client,
       params: {
         Bucket: this.bucket,
         Key: key,
         Body: stream,
-        ContentType: 'image'
+        ContentType: contentType
       },
       queueSize: 5,
       partSize: 5 * 1024 * 1024,
@@ -169,12 +169,12 @@ export class S3Provider implements OnModuleInit {
             Effect: "Allow",
             Principal: "*",
             Action: [ "s3:GetObject" ],
-            Resource: [ `arn:aws:s3:::${this.bucket}/*` ],
-            Condition: {
-              StringLike: {
-                "aws:Referer": this.appConfig.webUrl
-              }
-            }
+            Resource: [ `arn:aws:s3:::${this.bucket}/*` ]
+            // Condition: {
+            //   StringLike: {
+            //     "aws:Referer": this.appConfig.webUrl
+            //   }
+            // }
           }
         ]
       })

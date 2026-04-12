@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
-export const createItemSchema = z.object({
+export const itemSchema = z.object({
+  id: z.uuid('ID неверного формата').nullish(),
   name: z.string().nonempty('Название не может быть пустым'),
   description: z.string().nonempty('Описание не может быть пустым'),
   image: z
@@ -12,4 +13,4 @@ export const createItemSchema = z.object({
     )
 })
 
-export type CreateItemSchema = z.infer<typeof createItemSchema>
+export type ItemSchema = z.infer<typeof itemSchema>

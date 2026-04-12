@@ -1,5 +1,5 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
-import { Inject, Injectable, InternalServerErrorException, OnModuleInit } from '@nestjs/common'
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common'
 import type { Cache } from 'cache-manager'
 import crypto from 'crypto'
 
@@ -34,8 +34,11 @@ export class RedisService implements OnModuleInit {
   } as const
 
   public static readonly Patterns = {
-    GAMES: 'catalog:games:*',
-    ITEMS: 'catalog:items*'
+    GAMES: 'catalog:games*',
+    ITEMS: 'catalog:items*',
+    PLATFORMS: 'rawg:platforms*',
+    RAWG_GAMES: 'rawg:games*',
+    GENRES: 'rawg:genres*'
   } as const
 
   public async delete(key: string): Promise<void> {
@@ -43,15 +46,8 @@ export class RedisService implements OnModuleInit {
   }
 
   public async deleteByPattern(pattern: string): Promise<void> {
-    const client = this.cache.stores[0].store.client
-
-    try {
-      const keys = await client.keys(pattern)
-      if (keys.length > 0) return
-      await client.del(keys)
-    } catch (error) {
-      throw new InternalServerErrorException(`Redis Delete Pattern Error`)
-    }
+    const store = this.cache.stores[0]
+    await store.clear()
   }
 
   public async wrap<TData>(key: string, fn: () => Promise<TData>, ttl = 3_600_000): Promise<TData> {

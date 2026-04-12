@@ -16,9 +16,9 @@ class Application {
     this.setupGlobals(app)
     this.setupCors(app, appConfig)
 
-    await app.listen(appConfig.port, '0.0.0.0')
+    await app.listen(appConfig.port)
 
-    this.logger.log(`Server is running on: http://0.0.0.0:${appConfig.port}`)
+    this.logger.log(`Server is running on port: ${appConfig.port}`)
   }
 
   private static setupCors(app, config: AppConfig) {

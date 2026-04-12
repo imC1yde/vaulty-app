@@ -71,7 +71,7 @@ export class CustomInventoryRequest {
       }
   `
 
-  public static readonly DELETE_USER = gql`
+  public static readonly DELETE_ITEM = gql`
       mutation DeleteItem($id: String!) {
           deleteItem(id: $id) {
               id

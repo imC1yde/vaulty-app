@@ -1,4 +1,6 @@
 import type { IUserCatalogItem } from '@src/common/interfaces/user-catalog-item.interface.ts'
+import { AppConfig } from '@src/core/configs/app.config'
+import Spinner from '@src/widgets/ui/loaders/Spinner.tsx'
 import { ImageOff } from 'lucide-react'
 import { type FC, useState } from 'react'
 
@@ -22,7 +24,7 @@ const InventoryCard: FC<IInventoryCardProps> = ({ item, index }) => {
 
         {status === 'loading' && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-            <div className="w-8 h-8 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin"/>
+            <Spinner/>
           </div>
         )}
 
@@ -35,7 +37,7 @@ const InventoryCard: FC<IInventoryCardProps> = ({ item, index }) => {
           </div>
         ) : (
           <img
-            src={item.image}
+            src={item.image.replace('s3:9000', AppConfig.APP_HOST)}
             alt={item.name}
             className={`h-full w-full object-cover transition-opacity duration-500 ${
               status === 'success' ? 'opacity-100' : 'opacity-0'

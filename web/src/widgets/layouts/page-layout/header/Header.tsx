@@ -24,16 +24,16 @@ const Header: FC = () => {
   return (
     <header
       className="
-    fixed top-0 z-50 w-full py-3.5 px-8
-    grid grid-cols-3 items-center
-    bg-primary-bg/80 border-b border-main-border backdrop-blur-xl
-    transition-all"
+      fixed top-0 z-50 w-full px-6 py-3.5
+      flex items-center justify-between
+      bg-primary-bg/80 border-b border-main-border backdrop-blur-xl
+      transition-all"
     >
-      <div className="flex justify-start">
+      <div className="flex flex-1 justify-start">
         <Logo/>
       </div>
 
-      <nav className="flex flex-row gap-12 lg:gap-24 items-center justify-center">
+      <nav className="flex-none flex flex-row gap-8 lg:gap-16 items-center justify-center mx-4">
         {!(isMobile || isTablet) && data.map(([ label, link ], i) => (
           <NavbarTab key={i} link={link}>
             {label}
@@ -41,17 +41,17 @@ const Header: FC = () => {
         ))}
       </nav>
 
-      <div className="flex justify-end items-center gap-4">
+      <div className="flex-1 flex justify-end items-center gap-4">
         {(isMobile || isTablet) ? (
           <>
-            {isAuthorized && (
+            {isAuthorized && isTablet && (
               <div className="flex flex-col items-end mr-2">
-            <span className="text-xs font-bold text-white tracking-wide uppercase opacity-80">
-              {user?.username || user?.email}
-            </span>
+                <span className="text-xs font-bold text-white tracking-wide uppercase opacity-80">
+                  {user?.username || user?.email}
+                </span>
                 <span className="text-[9px] text-faded-text/85 font-medium uppercase tracking-[0.2em]">
-              Личный кабинет
-            </span>
+                  Личный кабинет
+                </span>
               </div>
             )}
             <Button onClick={menuHandler} className="p-2">
