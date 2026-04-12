@@ -1,25 +1,3 @@
-# ------------------------------------------------------
-# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
-# ------------------------------------------------------
-
-type GameListResponse {
-  id: String!
-  name: String!
-  backgroundImage: String!
-  isCompleted: Boolean!
-  rating: Float!
-  platforms: [String!]!
-  genres: [String!]!
-  esrbRating: String
-}
-
-type PaginatedGames {
-  data: [GameListResponse!]!
-  totalCount: Int!
-  totalPages: Int!
-  hasNextPage: Boolean!
-}
-
 type Game {
   id: String!
   rawgId: Int!
@@ -48,10 +26,49 @@ enum EsrbRating {
   RATING_PENDING
 }
 
+type PartialGame {
+  id: String!
+  name: String!
+  isCompleted: Boolean!
+  backgroundImage: String
+  rating: Float!
+  esrbRating: EsrbRating
+  genres: [String!]!
+  platforms: [String!]!
+}
+
+type PaginatedGames {
+  data: [PartialGame!]!
+  totalCount: Int!
+  totalPages: Int!
+  hasNextPage: Boolean!
+}
+
 type RawgGame {
   rawgId: Float!
   name: String!
   backgroundImage: String
+}
+
+type PaginatedRawgGames {
+  data: [RawgGame!]!
+  totalCount: Int!
+  totalPages: Int!
+  hasNextPage: Boolean!
+}
+
+type PaginatedPlatforms {
+  data: [String!]!
+  totalCount: Int!
+  totalPages: Int!
+  hasNextPage: Boolean!
+}
+
+type PaginatedGenres {
+  data: [String!]!
+  totalCount: Int!
+  totalPages: Int!
+  hasNextPage: Boolean!
 }
 
 type UserCatalogItem {
@@ -74,54 +91,71 @@ type User {
   email: String!
 }
 
-type UserWithToken {
-  id: String!
-  username: String
-  email: String!
-  token: String!
-}
-
 type Query {
-  getAllUserItems(filter: FindAllItemsInput): [PaginatedItems!]!
-  getItemById(id: String!): UserCatalogItem!
-  findAllGames(input: FindAllGamesInput!, filter: FindAllGamesFilterInput): [PaginatedGames!]!
-  findGameById(id: String!): Game!
+  getUser(input: GetUserInput!): User
+  getAllItems(input: GetAllItemsInput): PaginatedItems!
+  getItemById(id: String!): UserCatalogItem
+  getAllGames(input: GetAllGamesInput!, filter: GetAllGamesFilterInput): PaginatedGames!
+  getGameById(id: String!): Game
+  getRawgGames(input: GetRawgGamesInput!): PaginatedRawgGames!
+  getAllPlatforms(input: GetAllPlatformsInput!): PaginatedPlatforms!
+  getAllGenres(input: GetAllGenresInput!): PaginatedGenres!
 }
 
-input FindAllItemsInput {
+input GetUserInput {
+  email: String!
+}
+
+input GetAllItemsInput {
   page: Int!
   pageSize: Int!
 }
 
-input FindAllGamesInput {
+input GetAllGamesInput {
   page: Int!
   pageSize: Int!
 }
 
-input FindAllGamesFilterInput {
+input GetAllGamesFilterInput {
   name: String
   rating: Float
+  isCompleted: Boolean!
   genres: [String!]
   platforms: [String!]
   esrbRating: EsrbRating
 }
 
+input GetRawgGamesInput {
+  page: Int!
+  pageSize: Int!
+  search: String
+}
+
+input GetAllPlatformsInput {
+  page: Int!
+  pageSize: Int!
+}
+
+input GetAllGenresInput {
+  page: Int!
+  pageSize: Int!
+}
+
 type Mutation {
   registerUser(input: RegisterUserInput!): User
-  authorizeUser(input: AuthorizeUserInput!): UserWithToken!
+  authorizeUser(input: AuthorizeUserInput!): User
+  signOut: Boolean!
   updateUser(input: UpdateUserInput!): User!
-  deleteUser: User!
-  createUserItem(input: CreateItemInput!, image: Upload!): UserCatalogItem!
-  updateUserItem(id: String!, input: UpdateItemInput!, image: Upload!): UserCatalogItem!
-  deleteUserItem(id: String!): UserCatalogItem!
-  updateGame(id: String!, input: UpdateGameInput!): Game!
+  deleteUser(input: DeleteUserInput!): User!
+  createItem(input: CreateItemInput!, image: Upload!): UserCatalogItem!
+  updateItem(input: UpdateItemInput!, image: Upload!): UserCatalogItem!
+  deleteItem(id: String!): UserCatalogItem!
+  updateGame(input: UpdateGameInput!): Game!
   deleteGame(id: String!): Game!
-  addGame(id: Int!): Game!
-  getRawgGames(input: GetRawgGamesInput!): [RawgGame!]!
+  createGame(id: Float!): Game!
 }
 
 input RegisterUserInput {
-  username: String
   email: String!
   password: String!
 }
@@ -135,6 +169,10 @@ input UpdateUserInput {
   username: String
 }
 
+input DeleteUserInput {
+  password: String!
+}
+
 input CreateItemInput {
   name: String!
   description: String
@@ -144,16 +182,12 @@ input CreateItemInput {
 scalar Upload
 
 input UpdateItemInput {
+  id: String!
   name: String
   description: String
 }
 
 input UpdateGameInput {
+  id: String!
   isCompleted: Boolean!
-}
-
-input GetRawgGamesInput {
-  search: String!
-  page: Int!
-  pageSize: Int!
 }

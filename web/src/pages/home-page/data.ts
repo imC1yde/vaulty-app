@@ -14,7 +14,7 @@ export const features: Feature[] = [
   {
     title: "Любые предметы",
     desc: "Vaulty не ограничивается шаблонами. Сохраняй редкий мерч, девайсы или книги — название, описание и фото создают полноценную карточку.",
-    image: ''
+    image: 'src/assets/custom-inventory-preview.png'
   },
   {
     title: "Игровой бэклог",

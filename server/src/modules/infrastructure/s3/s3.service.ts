@@ -15,7 +15,7 @@ export class S3Service {
     if (!this.validateFile(mimetype, 'image'))
       throw new BadRequestException('Invalid file mimetype!')
 
-    const key = await this.s3.upload(userId, stream, filename)
+    const key = await this.s3.upload(userId, stream, filename, mimetype)
 
     return key
   }
@@ -33,7 +33,7 @@ export class S3Service {
     if (!this.validateFile(mimetype, 'image'))
       throw new BadRequestException('Invalid file mimetype!')
 
-    return await this.s3.update(stream, key)
+    return await this.s3.update(stream, key, mimetype)
   }
 
   public async delete(key: string): Promise<boolean> {

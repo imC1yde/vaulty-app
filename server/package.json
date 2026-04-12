@@ -15,7 +15,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config test/jest-e2e.json",
     "db:generate": "pnpm exec prisma generate",
-    "db:migrate": "pnpm exec prisma migrate dev"
+    "db:migrate": "pnpm exec prisma migrate dev",
+    "gql:generate": "pnpm exec ts-node -r tsconfig-paths/register scripts/generate-schema.script.ts"
   },
   "dependencies": {
     "@apollo/server": "^5.2.0",
@@ -24,6 +25,7 @@
     "@aws-sdk/lib-storage": "^3.990.0",
     "@aws-sdk/s3-request-presigner": "^3.978.0",
     "@itgorillaz/configify": "^4.0.2",
+    "@keyv/redis": "^5.1.6",
     "@nestjs/apollo": "^13.2.3",
     "@nestjs/axios": "^4.0.1",
     "@nestjs/cache-manager": "^3.1.0",
@@ -38,7 +40,6 @@
     "argon2": "^0.44.0",
     "axios": "^1.13.2",
     "cache-manager": "^7.2.8",
-    "cache-manager-redis-yet": "^5.1.5",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
     "cookie-parser": "^1.4.7",

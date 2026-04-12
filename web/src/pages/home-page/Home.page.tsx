@@ -4,7 +4,7 @@ import FeatureCard from '@src/pages/home-page/components/FeatureCard.tsx'
 import HeroTag from '@src/pages/home-page/components/HeroTag.tsx'
 import { bentoItems, features, heroTags } from '@src/pages/home-page/data.ts'
 import Layout from '@src/widgets/layouts/page-layout/Layout.tsx'
-import ActionButton from '@src/widgets/ui/buttons/ActionButton.tsx'
+import ActionButton from '@src/widgets/ui/buttons/action-button/ActionButton.tsx'
 import { motion } from 'framer-motion'
 import { type FC, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -16,7 +16,7 @@ const HomePage: FC = memo(() => {
 
   return (
     <Layout>
-      <div className="flex flex-col gap-12 py-6 bg-primary-bg min-h-screen">
+      <main className="flex flex-col gap-12 py-6 bg-primary-bg min-h-screen">
 
         <section className="text-center max-w-5xl mx-auto px-4 mb-4">
           <motion.h1
@@ -55,11 +55,16 @@ const HomePage: FC = memo(() => {
             <h2 className="text-3xl md:text-4xl font-semibold text-primary-text mb-8 tracking-wide overflow-y-hidden">
               Начни свою коллекцию сегодня
             </h2>
-            <ActionButton onClick={actionButtonHandler}>Создать</ActionButton>
+            <ActionButton.Neon
+              onClick={actionButtonHandler}
+              className="py-3 px-9 text-sm tracking-[0.2em] min-w-[200px]"
+            >
+              <span className="text-lg">Создать</span>
+            </ActionButton.Neon>
           </div>
         </section>
 
-      </div>
+      </main>
     </Layout>
   )
 })

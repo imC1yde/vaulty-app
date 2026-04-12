@@ -44,13 +44,15 @@ export class S3Provider implements OnModuleInit {
 
   // @Use Only for module initialization
   public async onModuleInit(): Promise<void> {
+    if (process.env.SKIP_CONNECTIONS === 'true') return
+
     await this.createBucket(this.bucket)
 
     await this.setPolicy()
   }
 
   // @returns A unique filename key for stored file
-  public async upload(userId: string, stream: ReadStream, filename: string): Promise<string> {
+  public async upload(userId: string, stream: ReadStream, filename: string, contentType: string): Promise<string> {
     const key = `${uuidV4()}-${Date.now()}`
 
     const process = new Upload({
@@ -59,7 +61,7 @@ export class S3Provider implements OnModuleInit {
         Bucket: this.bucket,
         Key: key,
         Body: stream,
-        ContentType: 'image',
+        ContentType: contentType,
         Metadata: {
           userId: userId,
           originFilename: filename
@@ -75,7 +77,7 @@ export class S3Provider implements OnModuleInit {
 
       return key
     } catch (error) {
-      throw new BadRequestException(`[Error]:[S3] File has not uploaded! ${error.message}`)
+      throw new BadRequestException(`File has not uploaded!`)
     }
   }
 
@@ -92,19 +94,19 @@ export class S3Provider implements OnModuleInit {
       { expiresIn: 3600 }
     )
 
-    return url
+    return url.replace('s3:9000', this.appConfig.host)
   }
 
   // Update file by key
   // @returns True if updated successfully
-  public async update(stream: ReadStream, key: string): Promise<boolean> {
+  public async update(stream: ReadStream, key: string, contentType: string): Promise<boolean> {
     const process = new Upload({
       client: this.client,
       params: {
         Bucket: this.bucket,
         Key: key,
         Body: stream,
-        ContentType: 'image'
+        ContentType: contentType
       },
       queueSize: 5,
       partSize: 5 * 1024 * 1024,
@@ -116,7 +118,7 @@ export class S3Provider implements OnModuleInit {
 
       return true
     } catch (error) {
-      throw new NotFoundException(`[Error]:[S3] File has not found to update! ${error.message}`)
+      throw new NotFoundException(`File has not found to update!`)
     }
   }
 
@@ -132,7 +134,7 @@ export class S3Provider implements OnModuleInit {
 
       return true
     } catch (error) {
-      throw new NotFoundException(`[Error]:[S3] File has not found to delete! ${error.message}`)
+      throw new NotFoundException(`File has not found to delete!`)
     }
   }
 
@@ -167,12 +169,12 @@ export class S3Provider implements OnModuleInit {
             Effect: "Allow",
             Principal: "*",
             Action: [ "s3:GetObject" ],
-            Resource: [ `arn:aws:s3:::${this.bucket}/*` ],
-            Condition: {
-              StringLike: {
-                "aws:Referer": this.appConfig.webUrl
-              }
-            }
+            Resource: [ `arn:aws:s3:::${this.bucket}/*` ]
+            // Condition: {
+            //   StringLike: {
+            //     "aws:Referer": this.appConfig.webUrl
+            //   }
+            // }
           }
         ]
       })
@@ -181,7 +183,7 @@ export class S3Provider implements OnModuleInit {
     try {
       await this.client.send(command)
     } catch (error) {
-      throw new InternalServerErrorException(`[Log]:[S3] Policy has not been sent! ${error} [Error]`)
+      throw new InternalServerErrorException(`Policy has not been sent!`)
     }
   }
 }

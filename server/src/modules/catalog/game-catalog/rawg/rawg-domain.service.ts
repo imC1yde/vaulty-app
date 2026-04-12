@@ -20,40 +20,36 @@ export class RawgDomainService {
   ) {}
 
   public async getAll(input: GetRawgGamesInput): Promise<PaginatedRawgGames> {
-    return await this.redis.wrap<PaginatedRawgGames>(
-      RedisService.Keys.RAWG.GAMES(input),
-      async () => {
-        const { search, page, pageSize } = input
+    const { search, page, pageSize } = input
 
-        const data = await lastValueFrom(this.rawgClient.getData<IRawgResponse<any>>(
-          `${this.rawgConfig.url}/games`,
-          {
-            params: {
-              key: this.rawgConfig.accessKey,
-              search: search,
-              page: page,
-              page_size: pageSize
-            }
-          },
-          {
-            timeout: 3000,
-            retryConfig: {
-              count: 3,
-              delay: (_, count) => timer(1000 * count)
-            }
-          }
-        ))
-        const totalPages = Math.ceil(data.count / pageSize)
-
-        return {
-          data: mapRawgList(data.results),
-          totalCount: data.count,
-          totalPages: totalPages <= 0 ? totalPages : 1000,
-          hasNextPage: (!!data.next) && totalPages <= 1000
+    const data = await lastValueFrom(this.rawgClient.getData<IRawgResponse<any>>(
+      `${this.rawgConfig.url}/games`,
+      {
+        params: {
+          key: this.rawgConfig.accessKey,
+          search: search,
+          page: page,
+          page_size: pageSize
+        }
+      },
+      {
+        timeout: 3000,
+        retryConfig: {
+          count: 3,
+          delay: (_, count) => timer(1000 * count)
         }
       }
-    )
+    ))
 
+    const totalPages = Math.ceil(data.count / pageSize)
+
+
+    return {
+      data: mapRawgList(data.results),
+      totalCount: data.count,
+      totalPages: totalPages <= 0 ? totalPages : 1000,
+      hasNextPage: (!!data.next) && totalPages <= 1000
+    }
   }
 
   public async getById(id: number): Promise<any> {
@@ -80,56 +76,48 @@ export class RawgDomainService {
   }
 
   public async getAllPlatforms(input: GetAllPlatformsInput): Promise<PaginatedPlatforms> {
-    return await this.redis.wrap<PaginatedPlatforms>(
-      RedisService.Keys.RAWG.PLATFORMS,
-      async () => {
-        const platforms = await lastValueFrom(this.rawgClient.getData<IRawgResponse<string>>(
-          `${this.rawgConfig.url}/platforms`,
-          {
-            params: {
-              key: this.rawgConfig.accessKey,
-              page: input.page,
-              page_size: input.pageSize
-            }
-          },
-          {
-            timeout: 3000,
-            retryConfig: {
-              count: 2,
-              delay: (_, count) => timer(1000 * count)
-            }
-          }
-        ))
-
-        return mapRawgResponse<string>(platforms, 'name', input.pageSize)
+    const platforms = await lastValueFrom(this.rawgClient.getData<IRawgResponse<string>>(
+      `${this.rawgConfig.url}/platforms`,
+      {
+        params: {
+          key: this.rawgConfig.accessKey,
+          page: input.page,
+          page_size: input.pageSize,
+          search: input.search
+        }
+      },
+      {
+        timeout: 3000,
+        retryConfig: {
+          count: 2,
+          delay: (_, count) => timer(1000 * count)
+        }
       }
-    )
+    ))
+
+    return mapRawgResponse<string>(platforms, 'name', input.pageSize)
   }
 
   public async getAllGenres(input: GetAllGenresInput): Promise<PaginatedGenres> {
-    return await this.redis.wrap<PaginatedGenres>(
-      RedisService.Keys.RAWG.GENRES,
-      async () => {
-        const genres = await lastValueFrom(this.rawgClient.getData<IRawgResponse<string>>(
-          `${this.rawgConfig.url}/genres`,
-          {
-            params: {
-              key: this.rawgConfig.accessKey,
-              page: input.page,
-              page_size: input.pageSize
-            }
-          },
-          {
-            timeout: 3000,
-            retryConfig: {
-              count: 2,
-              delay: (_, count) => timer(1000 * count)
-            }
-          }
-        ))
-
-        return mapRawgResponse<string>(genres, 'name', input.pageSize)
+    const genres = await lastValueFrom(this.rawgClient.getData<IRawgResponse<string>>(
+      `${this.rawgConfig.url}/genres`,
+      {
+        params: {
+          key: this.rawgConfig.accessKey,
+          page: input.page,
+          page_size: input.pageSize,
+          search: input.search
+        }
+      },
+      {
+        timeout: 3000,
+        retryConfig: {
+          count: 2,
+          delay: (_, count) => timer(1000 * count)
+        }
       }
-    )
+    ))
+
+    return mapRawgResponse<string>(genres, 'name', input.pageSize)
   }
 }

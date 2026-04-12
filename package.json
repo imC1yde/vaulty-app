@@ -1,9 +1,8 @@
 {
   "name": "vaulty-app",
-  "version": "1.0.0",
-  "packageManager": "pnpm@10.33.0",
+  "description": "An application for storing collections",
   "scripts": {
-    "server:dev": "pnpm --filter server run dev",
-    "web:dev": "pnpm --filter web run dev"
+    "web:dev": "pnpm --filter web run dev",
+    "server:dev": "pnpm --filter server run dev"
   }
 }

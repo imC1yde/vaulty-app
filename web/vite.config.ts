@@ -18,19 +18,13 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@src': path.resolve(__dirname, './src'),
-      'class-transformer/storage': 'class-transformer'
+      '@src': path.resolve(__dirname, './src')
     }
   },
-  optimizeDeps: {
-    include: [ '@app/common' ]
-  },
-  build: {
-    commonjsOptions: {
-      include: [ /common/, /node_modules/ ]
+  server: {
+    host: '0.0.0.0',
+    hmr: {
+      clientPort: 80
     }
-  },
-  define: {
-    'process.env': {}
   }
 })

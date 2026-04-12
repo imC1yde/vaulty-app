@@ -18,14 +18,14 @@ class Application {
 
     await app.listen(appConfig.port)
 
-    this.logger.log(`🚀 Server is running on: http://localhost:${appConfig.port}/graphql`)
+    this.logger.log(`Server is running on port: ${appConfig.port}`)
   }
 
   private static setupCors(app, config: AppConfig) {
     app.enableCors({
       origin: config.webUrl,
       credentials: true
-    });
+    })
   }
 
   private static setupMiddleware(app) {
@@ -42,7 +42,7 @@ class Application {
           enableImplicitConversion: true
         }
       })
-    );
+    )
   }
 }
 

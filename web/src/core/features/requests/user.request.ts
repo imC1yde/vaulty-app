@@ -22,8 +22,8 @@ export class UserRequest {
   `
 
   public static readonly GET_USER = gql`
-      query GetUser($email: String!) {
-          getUser(input: $email) {
+      query GetUser($input: GetUserInput!) {
+          getUser(input: $input) {
               id
               email
               username

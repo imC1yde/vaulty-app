@@ -1,7 +1,7 @@
-import { AppRoutes, BaseRoute } from '@src/common/enums/routes.enum.ts'
+import { AppRoutes, BaseRoutes } from '@src/common/enums/routes.enum.ts'
 
 export const data: [ string, string ][] = [
-  [ 'Главная', BaseRoute.HOME ],
+  [ 'Главная', BaseRoutes.HOME ],
   [ 'Инвентарь', AppRoutes.CUSTOM ],
   [ 'Игры', AppRoutes.GAMES ]
 ]

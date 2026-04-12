@@ -1,4 +1,4 @@
-import { AppRoutes, BaseRoute } from '@src/common/enums/routes.enum.ts'
+import { AppRoutes, BaseRoutes } from '@src/common/enums/routes.enum.ts'
 import CustomInventoryPage from '@src/pages/custom-inventory-page/CustomInventory.page.tsx'
 import GameInventoryPage from '@src/pages/game-inventory-page/GameInventory.page.tsx'
 import HomePage from '@src/pages/home-page/Home.page.tsx'
@@ -9,7 +9,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 
 export const routerSetup = [
   {
-    path: BaseRoute.HOME,
+    path: BaseRoutes.HOME,
     element: <HomePage/>,
     requiresAuth: false
   },
@@ -35,7 +35,7 @@ export const routerSetup = [
   },
   {
     path: '*',
-    element: <Navigate to={BaseRoute.HOME} replace/>
+    element: <Navigate to={BaseRoutes.HOME} replace/>
   }
 ]
 

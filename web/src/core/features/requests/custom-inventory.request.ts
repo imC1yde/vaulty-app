@@ -1,4 +1,25 @@
-import { gql } from '@apollo/client'
+import { gql, type TypedDocumentNode } from '@apollo/client'
+
+export interface IGetAllItemsData {
+  getAllItems: {
+    data: {
+      id: string
+      name: string
+      description: string
+      image: string
+    }[]
+    totalPages: number
+    totalCount: number
+    hasNextPage: boolean
+  }
+}
+
+export interface IGetAllItemsVariables {
+  input: {
+    page: number
+    pageSize: number
+  }
+}
 
 export class CustomInventoryRequest {
   public static readonly GET_ITEM = gql`
@@ -12,7 +33,7 @@ export class CustomInventoryRequest {
       }
   `
 
-  public static readonly GET_ALL_ITEM = gql`
+  public static readonly GET_ALL_ITEMS: TypedDocumentNode<IGetAllItemsData, IGetAllItemsVariables> = gql`
       query GetItems($input: GetAllItemsInput!) {
           getAllItems(input: $input) {
               data {
@@ -50,7 +71,7 @@ export class CustomInventoryRequest {
       }
   `
 
-  public static readonly DELETE_USER = gql`
+  public static readonly DELETE_ITEM = gql`
       mutation DeleteItem($id: String!) {
           deleteItem(id: $id) {
               id

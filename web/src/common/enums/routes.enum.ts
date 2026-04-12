@@ -1,13 +1,15 @@
-export const BaseRoute = {
+export const BaseRoutes = {
   HOME: '/',
   AUTH: '/authorize',
   INVENTORY: '/inventory'
 } as const
 
 export const AppRoutes = {
-  CUSTOM: `${BaseRoute.INVENTORY}/custom`,
-  GAMES: `${BaseRoute.INVENTORY}/games`,
-  SIGN_UP: `${BaseRoute.AUTH}/sign-up`,
-  SIGN_IN: `${BaseRoute.AUTH}/sign-in`
+  CUSTOM: `${BaseRoutes.INVENTORY}/custom`,
+  GAMES: `${BaseRoutes.INVENTORY}/games`,
+  SIGN_UP: `${BaseRoutes.AUTH}/sign-up`,
+  SIGN_IN: `${BaseRoutes.AUTH}/sign-in`
 } as const
+
+export type Route = typeof BaseRoutes[keyof typeof BaseRoutes] | typeof AppRoutes[keyof typeof AppRoutes]
 

@@ -18,55 +18,50 @@ export class UserCatalogService {
   ) {}
 
   public async getAll(userId: string, input: GetAllItemsInput): Promise<PaginatedItems> {
-    return await this.redis.wrap<PaginatedItems>(
-      RedisService.Keys.ITEMS.ALL(input),
-      async () => {
-        const { page, pageSize } = input
-        const skip = pageSize * (page - 1)
+    const { page, pageSize } = input
+    const skip = pageSize * (page - 1)
 
-        const [ items, count ] = await Promise.all([
-          this.prisma.item.findMany({
-            where: {
-              userId: userId
-            },
-            select: {
-              id: true,
-              name: true,
-              image: true,
-              description: true
-            },
-            take: pageSize,
-            skip: skip,
-            orderBy: {
-              name: 'asc'
-            }
-          }),
-          this.prisma.item.count({
-            where: {
-              userId: userId
-            }
-          })
-        ])
+    const [ items, count ] = await Promise.all([
+      this.prisma.item.findMany({
+        where: {
+          userId: userId
+        },
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          description: true
+        },
+        take: pageSize,
+        skip: skip,
+        orderBy: {
+          name: 'asc'
+        }
+      }),
+      this.prisma.item.count({
+        where: {
+          userId: userId
+        }
+      })
+    ])
 
-        const totalPages = Math.ceil(count / pageSize)
-        const mappedItems = await Promise.all(
-          items.map(async item => {
-            const imageUrl = await this.s3Service.getImage(item.image)
-
-            return {
-              ...item,
-              image: imageUrl
-            }
-          }))
+    const totalPages = Math.ceil(count / pageSize)
+    const mappedItems = await Promise.all(
+      items.map(async item => {
+        const imageUrl = await this.s3Service.getImage(item.image)
 
         return {
-          data: mappedItems,
-          totalCount: count,
-          totalPages: totalPages,
-          hasNextPage: page < totalPages
+          ...item,
+          image: imageUrl
         }
-      }
-    )
+      }))
+
+    return {
+      data: mappedItems,
+      totalCount: count,
+      totalPages: totalPages,
+      hasNextPage: page < totalPages
+    }
   }
 
   public async getById(userId: string, id: string): Promise<Nullable<UserCatalogItem>> {
@@ -101,6 +96,8 @@ export class UserCatalogService {
     const { name, description } = input
 
     const imageKey = await this.s3Service.uploadImage(userId, image)
+
+    await this.redis.deleteByPattern(RedisService.Patterns.ITEMS)
 
     return await this.prisma.item.create({
       data: {
@@ -150,7 +147,7 @@ export class UserCatalogService {
 
       return item
     } catch (error) {
-      throw new NotFoundException(`Item with ID ${id} not found`)
+      throw new NotFoundException(`Item not found`)
     }
   }
 
@@ -175,7 +172,7 @@ export class UserCatalogService {
 
       return item
     } catch (error) {
-      throw new NotFoundException(`Item with ID ${id} not found`)
+      throw new NotFoundException(`Item not found`)
     }
   }
 }

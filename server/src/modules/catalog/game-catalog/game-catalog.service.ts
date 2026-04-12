@@ -62,6 +62,8 @@ export class GameCatalogService {
       }
     })
 
+    await this.redis.deleteByPattern(RedisService.Patterns.GAMES)
+
     return mapGame({
       data: game,
       isCompleted: inventory.isCompleted
@@ -69,65 +71,57 @@ export class GameCatalogService {
   }
 
   public async getAll(userId: string, input: GetAllGamesInput, filter?: GetAllGamesFilterInput): Promise<PaginatedGames> {
-    return await this.redis.wrap<PaginatedGames>(
-      RedisService.Keys.GAME.ALL({
-        ...input,
-        ...filter
-      }),
-      async () => {
-        const { page, pageSize } = input
-        const skip = pageSize * (page - 1)
+    const { page, pageSize } = input
+    const skip = pageSize * (page - 1)
 
-        const [ inventory, count ] = await Promise.all([
-          this.prisma.gameInventory.findMany({
-            where: {
-              userId: userId,
-              isCompleted: filter?.isCompleted ? { equals: filter.isCompleted } : undefined,
-              game: {
-                slug: filter?.name ? { contains: filter.name, mode: 'insensitive' } : undefined,
-                rating: filter?.rating ? { gte: filter.rating } : undefined,
-                esrbRating: filter?.esrbRating ? { equals: mapEsrbToPrisma(filter.esrbRating) } : undefined,
-                genres: filter?.genres?.length ? { hasSome: filter.genres } : undefined,
-                platforms: filter?.platforms?.length ? { hasSome: filter.platforms } : undefined
-              }
-            },
-            include: {
-              game: true
-            },
-            take: pageSize,
-            skip: skip,
-            orderBy: {
-              game: {
-                name: 'asc'
-              }
-            }
-          }),
-          this.prisma.gameInventory.count({
-            where: {
-              userId: userId,
-              isCompleted: filter?.isCompleted ? { equals: filter.isCompleted } : undefined,
-              game: {
-                slug: filter?.name ? { contains: filter.name, mode: 'insensitive' } : undefined,
-                rating: filter?.rating ? { gte: filter.rating } : undefined,
-                esrbRating: filter?.esrbRating ? { equals: mapEsrbToPrisma(filter.esrbRating) } : undefined,
-                genres: filter?.genres?.length ? { hasSome: filter.genres } : undefined,
-                platforms: filter?.platforms?.length ? { hasSome: filter.platforms } : undefined
-              }
-            }
-          })
-        ])
-
-        const totalPages = Math.ceil(count / pageSize)
-        const mappedGame = mapGamesList(inventory)
-
-        return {
-          data: mappedGame,
-          totalPages: totalPages,
-          totalCount: count,
-          hasNextPage: page < totalPages
+    const [ inventory, count ] = await Promise.all([
+      this.prisma.gameInventory.findMany({
+        where: {
+          userId: userId,
+          isCompleted: filter?.isCompleted ? { equals: filter.isCompleted } : undefined,
+          game: {
+            slug: filter?.name ? { contains: filter.name, mode: 'insensitive' } : undefined,
+            rating: filter?.rating ? { gte: filter.rating } : undefined,
+            esrbRating: filter?.esrbRating ? { equals: mapEsrbToPrisma(filter.esrbRating) } : undefined,
+            genres: filter?.genres?.length ? { hasSome: filter.genres } : undefined,
+            platforms: filter?.platforms?.length ? { hasSome: filter.platforms } : undefined
+          }
+        },
+        include: {
+          game: true
+        },
+        take: pageSize,
+        skip: skip,
+        orderBy: {
+          game: {
+            name: 'asc'
+          }
         }
-      }
-    )
+      }),
+      this.prisma.gameInventory.count({
+        where: {
+          userId: userId,
+          isCompleted: filter?.isCompleted ? { equals: filter.isCompleted } : undefined,
+          game: {
+            slug: filter?.name ? { contains: filter.name, mode: 'insensitive' } : undefined,
+            rating: filter?.rating ? { gte: filter.rating } : undefined,
+            esrbRating: filter?.esrbRating ? { equals: mapEsrbToPrisma(filter.esrbRating) } : undefined,
+            genres: filter?.genres?.length ? { hasSome: filter.genres } : undefined,
+            platforms: filter?.platforms?.length ? { hasSome: filter.platforms } : undefined
+          }
+        }
+      })
+    ])
+
+    const totalPages = Math.ceil(count / pageSize)
+    const mappedGame = mapGamesList(inventory)
+
+    return {
+      data: mappedGame,
+      totalPages: totalPages,
+      totalCount: count,
+      hasNextPage: page < totalPages
+    }
   }
 
   public async getById(userId: string, id: string): Promise<Nullable<Game>> {
@@ -183,7 +177,7 @@ export class GameCatalogService {
         isCompleted: inventory.isCompleted
       })
     } catch (error) {
-      throw new InternalServerErrorException(`Game updating failed. ${error}`)
+      throw new InternalServerErrorException(`Game updating failed.`)
     }
   }
 
@@ -208,7 +202,7 @@ export class GameCatalogService {
         isCompleted: inventory.isCompleted
       })
     } catch (error) {
-      throw new InternalServerErrorException(`Game deleting failed. ${error}`)
+      throw new InternalServerErrorException(`Game deleting failed.`)
     }
   }
 }

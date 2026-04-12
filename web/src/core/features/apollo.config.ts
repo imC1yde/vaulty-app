@@ -1,9 +1,8 @@
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import { AppConfig } from '@src/core/configs/app.config.ts'
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 
 export const client: ApolloClient = new ApolloClient({
   link: new HttpLink({
-    uri: `${AppConfig.NEST_ORIGIN_URL}/graphql`,
+    uri: `/graphql`,
     credentials: 'include'
   }),
   cache: new InMemoryCache({

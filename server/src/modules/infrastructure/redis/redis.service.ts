@@ -1,14 +1,17 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common'
 import type { Cache } from 'cache-manager'
-import type { RedisStore } from 'cache-manager-redis-yet'
 import crypto from 'crypto'
 
 @Injectable()
-export class RedisService {
+export class RedisService implements OnModuleInit {
   constructor(
     @Inject(CACHE_MANAGER) private readonly cache: Cache
   ) {}
+
+  onModuleInit() {
+    if (process.env.SKIP_CONNECTIONS === 'true') return
+  }
 
   public static readonly Keys = {
     RAWG: {
@@ -31,8 +34,11 @@ export class RedisService {
   } as const
 
   public static readonly Patterns = {
-    GAMES: 'catalog:games:*',
-    ITEMS: 'catalog:items*'
+    GAMES: 'catalog:games*',
+    ITEMS: 'catalog:items*',
+    PLATFORMS: 'rawg:platforms*',
+    RAWG_GAMES: 'rawg:games*',
+    GENRES: 'rawg:genres*'
   } as const
 
   public async delete(key: string): Promise<void> {
@@ -40,11 +46,8 @@ export class RedisService {
   }
 
   public async deleteByPattern(pattern: string): Promise<void> {
-    const client = ((this.cache as any).store as unknown as RedisStore).client
-
-    for await (const key of client.scanIterator({ MATCH: pattern, COUNT: 100 })) {
-      await client.del(key);
-    }
+    const store = this.cache.stores[0]
+    await store.clear()
   }
 
   public async wrap<TData>(key: string, fn: () => Promise<TData>, ttl = 3_600_000): Promise<TData> {

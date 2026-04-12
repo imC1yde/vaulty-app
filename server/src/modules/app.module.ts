@@ -5,13 +5,14 @@ import { CatalogModule } from '@src/modules/catalog/catalog.module'
 import { CoreModule } from '@src/modules/core/core.module'
 import { InfrastructureModule } from '@src/modules/infrastructure/infrastructure.module'
 import { graphqlUploadExpress } from 'graphql-upload-ts'
+import { join } from "path"
 
 @Module({
   imports: [
     InfrastructureModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: 'src/schema.gql',
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: false,
       introspection: true,
       buildSchemaOptions: {
@@ -30,7 +31,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(
         graphqlUploadExpress({
-          maxFileSize: 8 * 1024 * 1024,
+          maxFileSize: 64 * 1024 * 1024,
           maxFiles: 2
         })
       )

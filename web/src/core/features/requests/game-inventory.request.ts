@@ -25,9 +25,7 @@ export class GameInventoryRequest {
               data {
                   id
                   name
-                  rawgId
                   isCompleted
-                  description
                   backgroundImage
                   rating
                   genres
@@ -42,8 +40,8 @@ export class GameInventoryRequest {
   `
 
   public static readonly CREATE_GAME = gql`
-      mutation CreateGame($input: CreateGameInput!) {
-          createGame(input: $input) {
+      mutation CreateGame($id: Float!) {
+          createGame(id: $id) {
               id
               name
               rawgId
@@ -60,8 +58,8 @@ export class GameInventoryRequest {
   `
 
   public static readonly UPDATE_GAME = gql`
-      mutation UpdateGame($id: String!, $input: UpdateGameInput!) {
-          updateGame(id: $id, input: $input) {
+      mutation UpdateGame($input: UpdateGameInput!) {
+          updateGame(input: $input) {
               id
               name
               rawgId
