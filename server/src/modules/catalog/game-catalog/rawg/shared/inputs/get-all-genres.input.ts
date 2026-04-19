@@ -1,11 +1,5 @@
-import { Field, InputType } from '@nestjs/graphql'
+import { InputType } from '@nestjs/graphql'
 import { PaginationInput } from '@src/common/strategies/pagination-input.strategy'
-import { IsOptional, IsString } from 'class-validator'
 
 @InputType()
-export class GetAllGenresInput extends PaginationInput() {
-  @IsString()
-  @IsOptional()
-  @Field(() => String, { nullable: true })
-  readonly search: string
-}
+export class GetAllGenresInput extends PaginationInput() {}

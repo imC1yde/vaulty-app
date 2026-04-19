@@ -17,7 +17,7 @@ export class GetAllGamesFilterInput {
 
   @IsBoolean()
   @IsOptional()
-  @Field(() => Boolean)
+  @Field(() => Boolean, { nullable: true })
   readonly isCompleted: Nullable<boolean>
 
   @IsArray()

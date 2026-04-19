@@ -4,19 +4,19 @@ import type { IUserCatalogItem } from '@src/common/interfaces/user-catalog-item.
 import type { Nullable } from '@src/common/utilities/nullable.util.ts'
 import { CustomInventoryRequest } from '@src/core/features/requests/custom-inventory.request.ts'
 import { useToastStore } from '@src/core/stores/toast.store.ts'
-import ItemForm from '@src/pages/custom-inventory-page/forms/Item.form.tsx'
+import ItemForm from '@src/pages/custom-inventory-page/forms/ItemForm.tsx'
 import Modal from '@src/widgets/modals/Modal.tsx'
 import ActionButton from '@src/widgets/ui/buttons/action-button/ActionButton.tsx'
 import { type FC, useState } from 'react'
 
-interface InventoryItemModalProps {
-  onClose: () => void
-  item?: Nullable<IUserCatalogItem>
-  currentPage: number
-  pageSize: number
+interface IInventoryItemModalProps {
+  readonly onClose: () => void
+  readonly item?: Nullable<IUserCatalogItem>
+  readonly currentPage: number
+  readonly pageSize: number
 }
 
-const ItemDetails: FC<InventoryItemModalProps> = ({ item, onClose, currentPage, pageSize }) => {
+const ItemDetails: FC<IInventoryItemModalProps> = ({ item, onClose, currentPage, pageSize }) => {
   const [ isEditMode, setIsEditMode ] = useState<boolean>(false)
   const { addToast } = useToastStore()
 
@@ -71,7 +71,7 @@ const ItemDetails: FC<InventoryItemModalProps> = ({ item, onClose, currentPage, 
             </div>
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex flex-col md:flex-row gap-3 pt-4">
             <ActionButton.Primary
               className="flex-1"
               onClick={() => setIsEditMode(true)}>

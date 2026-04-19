@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 interface IFieldErrorProps {
-  error: any
+  readonly error: any
 }
 
 const FieldError: FC<IFieldErrorProps> = ({ error }) => {

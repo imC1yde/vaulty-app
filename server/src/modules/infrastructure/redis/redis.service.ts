@@ -9,23 +9,23 @@ export class RedisService implements OnModuleInit {
     @Inject(CACHE_MANAGER) private readonly cache: Cache
   ) {}
 
-  onModuleInit() {
+  public onModuleInit() {
     if (process.env.SKIP_CONNECTIONS === 'true') return
   }
 
   public static readonly Keys = {
     RAWG: {
-      PLATFORMS: 'rawg:platforms:all',
-      GENRES: 'rawg:genres:all',
+      PLATFORMS: (input: Object) => `rawg:platforms:${this.generatePaginationHash(input)}`,
+      GENRES: (input: Object) => `rawg:genres:${this.generatePaginationHash(input)}`,
       GAME: (id: number) => `rawg:games:${id}`,
-      GAMES: (input: Object) => `rawg:games:${RedisService.generatePaginationHash(input)}`
+      GAMES: (input: Object) => `rawg:games:${this.generatePaginationHash(input)}`
     },
     GAME: {
-      ALL: (input: Object) => `catalog:games:${RedisService.generatePaginationHash(input)}`,
+      ALL: (input: Object) => `catalog:games:${this.generatePaginationHash(input)}`,
       SINGLE: (id: string) => `catalog:games:${id}`
     },
     ITEMS: {
-      ALL: (input: Object) => `catalog:items:${RedisService.generatePaginationHash(input)}`,
+      ALL: (input: Object) => `catalog:items:${this.generatePaginationHash(input)}`,
       SINGLE: (id: string) => `catalog:items:${id}`
     },
     USER: {
@@ -59,7 +59,7 @@ export class RedisService implements OnModuleInit {
     return result
   }
 
-  private static generatePaginationHash(args: Object): string {
+  private generatePaginationHash(args: Object): string {
     const sortedArgs = Object.keys(args)
       .sort()
       .reduce((acc, key) => {

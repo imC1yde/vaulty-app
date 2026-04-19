@@ -1,7 +1,13 @@
-import { gql } from '@apollo/client'
+import { gql, type TypedDocumentNode } from '@apollo/client'
+import type {
+    IGetAllGamesData,
+    IGetAllGamesVariables,
+    IGetGameData,
+    IGetGameVariables
+} from '@src/core/features/interfaces/game-inventory.interface.ts'
 
 export class GameInventoryRequest {
-  public static readonly GET_GAME = gql`
+  public static readonly GET_GAME: TypedDocumentNode<IGetGameData, IGetGameVariables> = gql`
       query GetGame($id: String!) {
           getGameById(id: $id) {
               id
@@ -19,8 +25,8 @@ export class GameInventoryRequest {
       }
   `
 
-  public static readonly GET_ALL_GAMES = gql`
-      query GetGames($input: GetAllGamesInput!, $filter: GetAllGamesFilterInput!) {
+  public static readonly GET_ALL_GAMES: TypedDocumentNode<IGetAllGamesData, IGetAllGamesVariables> = gql`
+      query GetGames($input: GetAllGamesInput!, $filter: GetAllGamesFilterInput) {
           getAllGames(input: $input, filter: $filter) {
               data {
                   id

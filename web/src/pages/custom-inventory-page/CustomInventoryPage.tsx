@@ -6,7 +6,7 @@ import type { Nullable } from '@src/common/utilities/nullable.util'
 import { CustomInventoryRequest } from '@src/core/features/requests/custom-inventory.request.ts'
 import InventoryCard from '@src/pages/custom-inventory-page/components/InventoryCard.tsx'
 import ItemDetails from '@src/pages/custom-inventory-page/components/ItemDetails.tsx'
-import ItemForm from '@src/pages/custom-inventory-page/forms/Item.form.tsx'
+import ItemForm from '@src/pages/custom-inventory-page/forms/ItemForm.tsx'
 import Layout from '@src/widgets/layouts/page-layout/Layout.tsx'
 import Modal from '@src/widgets/modals/Modal.tsx'
 import Button from '@src/widgets/ui/buttons/Button'
@@ -21,8 +21,8 @@ const CustomInventoryPage: FC = memo(() => {
 
   const pageSize = useMemo(() => {
     if (isDesktop) return 72
-    if (isTablet) return 52
-    return 30
+    if (isTablet) return 51
+    return 20
   }, [ isTablet, isDesktop, isMobile ])
 
   useEffect(() => {
@@ -55,22 +55,23 @@ const CustomInventoryPage: FC = memo(() => {
     <Layout>
       <main className="max-w-[1440px] mx-auto p-4 md:p-8 flex flex-col gap-8">
 
-        <section className="flex flex-row justify-between border-b border-gray-800 pb-6 items-center gap-1 md:items-end">
+        <section className="flex flex-row justify-between border-b border-gray-800 pb-6 items-center gap-2 md:items-end">
           <div>
-            <h1 className="md:text-2xl text-xl font-bold text-white">Моя коллекция</h1>
-            <p className="text-gray-400 text-[10px] md:text-sm">Всего предметов: {totalCount}</p>
+            <h1 className="md:text-2xl text-lg font-bold text-white">Моя коллекция</h1>
+            <p className="text-gray-400 text-[9px] md:text-sm">Всего предметов: {totalCount}</p>
           </div>
-          <Button
-            className="bg-blue-600 hover:bg-blue-500 text-white px-6"
-            onClick={() => setIsCreateModalOpen(true)}
-          >
-            Добавить
-          </Button>
+          <div className="flex-none">
+            <Button
+              className="!flex-none w-fit bg-accent/10 border-accent/30 hover:border-accent text-accent px-4 py-2 md:px-6 md:py-2.5 text-[10px] md:text-xs"
+              onClick={() => setIsCreateModalOpen(true)}
+            >
+              Добавить
+            </Button>
+          </div>
         </section>
 
         <section className="grid gap-4 sm:gap-6
-          grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6
-          @xs:grid-cols-2">
+          grid-cols-1 sm:grid-cols-3 xl:grid-cols-6">
           {items.map((item: any, i: number) => (
             <div key={item.id} onClick={() => setSelectedItem(item)} className="cursor-pointer transition-transform active:scale-95">
               <InventoryCard item={item} index={(currentPage - 1) * pageSize + i}/>

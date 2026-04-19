@@ -4,13 +4,13 @@ import { X } from 'lucide-react'
 import { type FC, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 
-interface ModalProps extends INestable {
-  isOpen: boolean
-  onClose: () => void
-  title?: Nullable<string>
+interface IModalProps extends INestable {
+  readonly isOpen: boolean
+  readonly onClose: () => void
+  readonly title?: Nullable<string>
 }
 
-const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
+const Modal: FC<IModalProps> = ({ isOpen, onClose, title, children }) => {
   useEffect(() => {
     if (!isOpen) return
 
@@ -21,9 +21,10 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
     document.body.style.height = '100vh'
 
     const preventDefault = (e: WheelEvent | TouchEvent) => {
-      if ((e.target as HTMLElement).closest('.modal-content')) return
+      const target = e.target as HTMLElement
+      if (target.closest('[data-modal-content]')) return
       e.preventDefault()
-    };
+    }
 
     document.addEventListener('wheel', preventDefault, { passive: false })
     document.addEventListener('touchmove', preventDefault, { passive: false })
@@ -46,15 +47,18 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
         onClick={onClose}
       />
 
-      <div className="relative w-full max-w-lg bg-[#1a222c] border border-gray-800 rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
-        <header className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+      <div className="
+        relative w-full max-w-lg bg-[#1a222c] border border-gray-800 rounded-2xl shadow-2xl
+        animate-in fade-in zoom-in-95 duration-200 flex flex-col max-h-[85vh] overflow-hidden"
+      >
+        <header className="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b border-gray-800">
           <h3 className="text-lg font-semibold text-white">{title}</h3>
-          <button onClick={onClose} className="p-1 text-gray-400 hover:text-white transition-colors">
+          <button onClick={onClose} className="p-1 text-gray-400 hover:text-white transition-colors overflow-hidden">
             <X size={20}/>
           </button>
         </header>
 
-        <div className="p-6 overflow-y-auto max-h-[80vh]">
+        <div className="flex-1 min-h-0 p-6" data-modal-content>
           {children}
         </div>
       </div>

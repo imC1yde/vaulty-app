@@ -20,7 +20,7 @@ model User {
   games GameInventory[]
 
   createdAt DateTime @default(now()) @map("created_at")
-  updatedUt DateTime @updatedAt @map("updated_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
 }
@@ -37,7 +37,7 @@ model Item {
   userId String? @map("user_id") @db.Uuid
 
   createdAt DateTime @default(now()) @map("created_at")
-  updatedUt DateTime @updatedAt @map("updated_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("items")
 }

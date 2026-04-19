@@ -1,6 +1,6 @@
 import type { IUserCatalogItem } from '@src/common/interfaces/user-catalog-item.interface.ts'
 import { AppConfig } from '@src/core/configs/app.config'
-import Spinner from '@src/widgets/ui/loaders/Spinner.tsx'
+import SpinnerLoader from '@src/widgets/ui/loaders/SpinnerLoader.tsx'
 import { ImageOff } from 'lucide-react'
 import { type FC, useState } from 'react'
 
@@ -24,7 +24,7 @@ const InventoryCard: FC<IInventoryCardProps> = ({ item, index }) => {
 
         {status === 'loading' && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-            <Spinner/>
+            <SpinnerLoader/>
           </div>
         )}
 

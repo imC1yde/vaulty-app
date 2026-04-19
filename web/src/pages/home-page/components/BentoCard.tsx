@@ -2,7 +2,7 @@ import type { BentoItem } from '@src/pages/home-page/data.ts'
 import type { FC } from 'react'
 
 interface IBentoCardProps {
-  item: BentoItem
+  readonly item: BentoItem
 }
 
 const BentoCard: FC<IBentoCardProps> = (props) => (

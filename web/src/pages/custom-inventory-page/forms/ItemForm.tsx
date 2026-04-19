@@ -10,11 +10,11 @@ import Field from '@src/widgets/ui/field/Field.tsx'
 import type { ChangeEvent, FC } from 'react'
 
 interface ICreateItemFormProps {
-  isUpdate?: boolean
-  initialData?: Nullable<IUserCatalogItem>
-  onSuccess?: Nullable<() => void>
-  currentPage: number
-  pageSize: number
+  readonly isUpdate?: boolean
+  readonly initialData?: Nullable<IUserCatalogItem>
+  readonly onSuccess?: Nullable<() => void>
+  readonly currentPage: number
+  readonly pageSize: number
 }
 
 const ItemForm: FC<ICreateItemFormProps> = ({ isUpdate, initialData, onSuccess, currentPage, pageSize }) => {
@@ -38,9 +38,17 @@ const ItemForm: FC<ICreateItemFormProps> = ({ isUpdate, initialData, onSuccess, 
       file: data.image
     }),
     mutationOptions: {
-      refetchQueries: [ 'GetItems', 'getAllItems' ],
+      refetchQueries: [ {
+        query: CustomInventoryRequest.GET_ALL_ITEMS,
+        variables: {
+          input: {
+            page: currentPage,
+            pageSize
+          }
+        }
+      } ],
       onCompleted: () => {
-        addToast(isUpdate ? 'Данные обновлены' : 'Предмет добавлен', ToastType.INFO);
+        addToast(isUpdate ? 'Данные обновлены' : 'Предмет добавлен', ToastType.INFO)
         onSuccess?.()
       },
       onError: (error) => addToast(error.message, ToastType.ERROR)
@@ -50,7 +58,7 @@ const ItemForm: FC<ICreateItemFormProps> = ({ isUpdate, initialData, onSuccess, 
   const fileHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) mutationForm.form.setValue('image', file, { shouldValidate: true })
-  };
+  }
 
   return (
     <form onSubmit={mutationForm.onSubmit} className="flex flex-col gap-5">

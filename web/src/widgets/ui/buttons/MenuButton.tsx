@@ -1,9 +1,9 @@
 import type { ButtonHTMLAttributes, FC, ReactNode } from 'react'
 
 interface IMenuButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode
-  icon?: ReactNode
-  variant?: 'ghost' | 'destructive'
+  readonly children: ReactNode
+  readonly icon?: ReactNode
+  readonly variant?: 'ghost' | 'destructive'
 }
 
 const MenuButton: FC<IMenuButtonProps> = ({ children, icon, variant = 'ghost', className, ...props }) => {

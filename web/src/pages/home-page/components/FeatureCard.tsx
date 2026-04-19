@@ -3,8 +3,8 @@ import { motion } from 'framer-motion'
 import type { FC } from 'react'
 
 interface IFeatureCardProps {
-  feature: Feature
-  index: number
+  readonly feature: Feature
+  readonly index: number
 }
 
 const FeatureCard: FC<IFeatureCardProps> = (props) => (
