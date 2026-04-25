@@ -54,28 +54,33 @@ const Header: FC = () => {
                 </span>
               </div>
             )}
-            <Button onClick={menuHandler} className="p-2">
-              <MenuIcon/>
+            <Button
+              onClick={menuHandler}
+              className="!p-1 max-w-11 w-11 h-11 flex items-center justify-center shrink-0"
+            >
+              <MenuIcon size={20}/>
             </Button>
           </>
         ) : (
           isAuthorized ? (
             <>
               <div className="flex flex-col items-end mr-2">
-            <span className="text-xs font-bold text-white tracking-wide uppercase opacity-80">
-              {user?.username || user?.email}
-            </span>
+                <span className="text-xs font-bold text-white tracking-wide uppercase opacity-80">
+                  {user?.username || user?.email}
+                </span>
                 <span className="text-[9px] text-faded-text/85 font-medium uppercase tracking-[0.2em]">
-              Личный кабинет
-            </span>
+                  Личный кабинет
+                </span>
               </div>
               <UserMenu/>
             </>
           ) : (
-            <Button onClick={signUpHandler}>
-              <span className="text-sm font-medium tracking-wide">Войти</span>
-              <LogInIcon size={18}/>
-            </Button>
+            <div className="w-31">
+              <Button onClick={signUpHandler}>
+                <span className="text-sm font-medium tracking-wide">Войти</span>
+                <LogInIcon size={18}/>
+              </Button>
+            </div>
           )
         )}
       </div>

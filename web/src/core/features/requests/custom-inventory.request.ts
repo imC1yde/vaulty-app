@@ -1,25 +1,8 @@
 import { gql, type TypedDocumentNode } from '@apollo/client'
-
-export interface IGetAllItemsData {
-  getAllItems: {
-    data: {
-      id: string
-      name: string
-      description: string
-      image: string
-    }[]
-    totalPages: number
-    totalCount: number
-    hasNextPage: boolean
-  }
-}
-
-export interface IGetAllItemsVariables {
-  input: {
-    page: number
-    pageSize: number
-  }
-}
+import type {
+  IGetAllItemsData,
+  IGetAllItemsVariables
+} from '@src/core/features/interfaces/custom-inventory.interface.ts'
 
 export class CustomInventoryRequest {
   public static readonly GET_ITEM = gql`

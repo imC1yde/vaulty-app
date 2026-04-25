@@ -6,10 +6,10 @@ export const mapGame = ({ data, isCompleted }: any) => {
     rawgId: data.rawgId,
     name: data.name,
     isCompleted: isCompleted,
-    description: data?.description_raw,
-    backgroundImage: data?.background_image,
+    description: data?.description,
+    backgroundImage: data?.backgroundImage,
     rating: data.rating,
-    released: data?.released,
+    released: data.released ? new Date(data.released) : null,
     esrbRating: data?.esrbRating,
     genres: data.genres,
     platforms: data.platforms

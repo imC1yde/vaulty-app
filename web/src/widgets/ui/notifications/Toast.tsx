@@ -1,12 +1,12 @@
 import { ToastType } from '@src/common/enums/toast-type.enum.ts'
 import { useToastStore } from '@src/core/stores/toast.store.ts'
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion'
 
-export const Toast = () => {
-  const { toasts, removeToast } = useToastStore();
+const Toast = () => {
+  const { toasts, removeToast } = useToastStore()
 
   return (
-    <div className="fixed bottom-5 right-5 z-[100] flex flex-col gap-2">
+    <div className="fixed bottom-5 right-5 z-[200] flex flex-col gap-2">
       <AnimatePresence mode="popLayout">
         {toasts.map((toast) => (
           <motion.div
@@ -27,5 +27,7 @@ export const Toast = () => {
         ))}
       </AnimatePresence>
     </div>
-  );
-};
+  )
+}
+
+export default Toast

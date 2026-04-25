@@ -1,12 +1,13 @@
+import DotLoader from '@src/widgets/ui/loaders/DotLoader.tsx'
 import { type HTMLMotionProps, motion } from 'framer-motion'
 import type { FC, ReactNode } from 'react'
 
 export interface IBaseButtonProps extends HTMLMotionProps<'button'> {
-  children: ReactNode
-  className?: string
-  isLoading?: boolean
-  variantClasses?: string
-  glowClass?: string
+  readonly children: ReactNode
+  readonly className?: string
+  readonly isLoading?: boolean
+  readonly variantClasses?: string
+  readonly glowClass?: string
 }
 
 const BaseButton: FC<IBaseButtonProps> =
@@ -38,7 +39,7 @@ const BaseButton: FC<IBaseButtonProps> =
         </div>
 
         <span className="relative z-10 flex items-center justify-center gap-2 tracking-wider uppercase text-[11px] pointer-events-none shrink-0">
-        {isLoading ? <div className="animate-spin">...</div> : children}
+        {isLoading ? <DotLoader/> : children}
         </span>
 
         <div className="absolute inset-0 border border-white/5 rounded-xl pointer-events-none group-hover:border-white/20 transition-colors z-20"/>

@@ -91,9 +91,9 @@ const AsideMenu: FC<IAsideMenuProps> = memo((props) => {
       </span>
           <Button
             onClick={props.close}
-            className="p-2 flex items-center justify-center flex-shrink-0 transition-transform active:scale-90"
+            className="!p-1 max-w-11 w-11 h-11 flex items-center justify-center shrink-0"
           >
-            <MenuIcon/>
+            <MenuIcon size={20}/>
           </Button>
         </div>
 

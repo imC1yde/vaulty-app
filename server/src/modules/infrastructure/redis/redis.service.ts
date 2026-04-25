@@ -9,14 +9,14 @@ export class RedisService implements OnModuleInit {
     @Inject(CACHE_MANAGER) private readonly cache: Cache
   ) {}
 
-  onModuleInit() {
+  public onModuleInit() {
     if (process.env.SKIP_CONNECTIONS === 'true') return
   }
 
   public static readonly Keys = {
     RAWG: {
-      PLATFORMS: 'rawg:platforms:all',
-      GENRES: 'rawg:genres:all',
+      PLATFORMS: (input: Object) => `rawg:platforms:${RedisService.generatePaginationHash(input)}`,
+      GENRES: (input: Object) => `rawg:genres:${RedisService.generatePaginationHash(input)}`,
       GAME: (id: number) => `rawg:games:${id}`,
       GAMES: (input: Object) => `rawg:games:${RedisService.generatePaginationHash(input)}`
     },

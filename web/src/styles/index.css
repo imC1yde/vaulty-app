@@ -2,6 +2,7 @@
 @import "tailwindcss";
 @import "@src/styles/colors.styles.css";
 @import "@src/styles/animations.styles.css";
+@import "@src/styles/utilities.styles.css";
 
 @layer base {
     * {

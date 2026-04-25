@@ -12,9 +12,7 @@ const AuthProxy: FC<IAuthProxyProps> = (props) => {
 
   if (!isAuthorized) return <Navigate to={AppRoutes.SIGN_IN} state={{ from: location }} replace/>
 
-  return (
-    <>{props.children}</>
-  )
+  return props.children
 }
 
 export default AuthProxy

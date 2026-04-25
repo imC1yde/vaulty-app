@@ -2,7 +2,7 @@ import type { INestable } from '@src/common/interfaces/nestable.interface.ts'
 import type { FC } from 'react'
 
 interface IHeroTagProps extends INestable {
-  isPulse?: boolean
+  readonly isPulse?: boolean
 }
 
 const HeroTag: FC<IHeroTagProps> = (props) => (

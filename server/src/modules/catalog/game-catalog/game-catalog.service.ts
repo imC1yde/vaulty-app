@@ -1,4 +1,5 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
+import { EsrbRating } from '@src/common/enums/esrb-rating.enum'
 import { mapArray } from '@src/common/maps/array.map'
 import { mapEsrbToPrisma } from '@src/common/maps/esrb.map'
 import { Game, PaginatedGames } from '@src/common/types/game.type'
@@ -22,8 +23,8 @@ export class GameCatalogService {
   public async create(userId: string, input: CreateGameInput): Promise<Game> {
     const platforms = mapArray(input.platforms)
     const genres = mapArray(input.genres)
-    const released = input.released ? input.released + 'T00:00:00.000Z' : null
-    const esrbRating = mapEsrbToPrisma(input.esrbRating as string)
+    const released = input.released ? new Date(input.released) : null
+    const esrbRating = input.esrbRating ? mapEsrbToPrisma(input.esrbRating as string) : null
 
     const game = await this.prisma.game.upsert({
       where: {
@@ -65,7 +66,10 @@ export class GameCatalogService {
     await this.redis.deleteByPattern(RedisService.Patterns.GAMES)
 
     return mapGame({
-      data: game,
+      data: {
+        ...game,
+        esrbRating: game.esrbRating ? EsrbRating[game.esrbRating] : undefined
+      },
       isCompleted: inventory.isCompleted
     })
   }
@@ -114,10 +118,10 @@ export class GameCatalogService {
     ])
 
     const totalPages = Math.ceil(count / pageSize)
-    const mappedGame = mapGamesList(inventory)
+    const mappedGames = mapGamesList(inventory)
 
     return {
-      data: mappedGame,
+      data: mappedGames,
       totalPages: totalPages,
       totalCount: count,
       hasNextPage: page < totalPages
@@ -125,7 +129,7 @@ export class GameCatalogService {
   }
 
   public async getById(userId: string, id: string): Promise<Nullable<Game>> {
-    return await this.redis.wrap<Nullable<Game>>(
+    const res = await this.redis.wrap<Nullable<Game>>(
       RedisService.Keys.GAME.SINGLE(id),
       async () => {
         const inventory = await this.prisma.gameInventory.findUnique({
@@ -140,14 +144,22 @@ export class GameCatalogService {
           }
         })
 
-        if (!inventory) throw new NotFoundException('Game not found')
+        if (!inventory) throw new NotFoundException('Игра не найдена')
 
         return mapGame({
-          data: inventory.game,
+          data: {
+            ...inventory.game,
+            esrbRating: inventory.game.esrbRating ? EsrbRating[inventory.game.esrbRating] : undefined
+          },
           isCompleted: inventory.isCompleted
         })
       }
     )
+
+    return res ? {
+      ...res,
+      released: res?.released ? new Date(res.released) : null
+    } : null
   }
 
   public async update(userId: string, input: UpdateGameInput): Promise<Game> {
@@ -173,11 +185,14 @@ export class GameCatalogService {
       await this.redis.deleteByPattern(RedisService.Patterns.GAMES)
 
       return mapGame({
-        data: inventory.game,
+        data: {
+          ...inventory.game,
+          esrbRating: inventory.game.esrbRating ? EsrbRating[inventory.game.esrbRating] : undefined
+        },
         isCompleted: inventory.isCompleted
       })
     } catch (error) {
-      throw new InternalServerErrorException(`Game updating failed.`)
+      throw new InternalServerErrorException(`Обновление игры не удалось`)
     }
   }
 
@@ -198,11 +213,14 @@ export class GameCatalogService {
       await this.redis.delete(RedisService.Keys.GAME.SINGLE(id))
 
       return mapGame({
-        data: inventory.game,
+        data: {
+          ...inventory.game,
+          esrbRating: inventory.game.esrbRating ? EsrbRating[inventory.game.esrbRating] : undefined
+        },
         isCompleted: inventory.isCompleted
       })
     } catch (error) {
-      throw new InternalServerErrorException(`Game deleting failed.`)
+      throw new InternalServerErrorException(`Удалить игру не удалось`)
     }
   }
 }

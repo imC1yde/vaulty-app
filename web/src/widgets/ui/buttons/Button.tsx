@@ -11,8 +11,9 @@ const Button: FC<IButtonProps> = ({ children, onClick, disabled, className = "",
       onClick={onClick}
       disabled={disabled ?? false}
       className={`
-        px-6 py-2.5 p-2.5 min-w-fit w-fit
-        flex flex-row items-center gap-3 flex-nowrap flex-shrink-0
+        px-6 py-2.5 
+        flex-1 w-full 
+        flex flex-row items-center justify-center gap-3 
         bg-secondary-bg border border-accent/30 hover:border-accent rounded-lg
         cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed
         duration-200 transition-all

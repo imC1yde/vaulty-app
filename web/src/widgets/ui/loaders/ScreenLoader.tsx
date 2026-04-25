@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { type FC } from 'react'
-import { createPortal } from 'react-dom';
+import { createPortal } from 'react-dom'
 import { BarLoader } from 'react-spinners'
 
 interface IScreenLoaderProps {
@@ -26,7 +26,7 @@ const ScreenLoader: FC<IScreenLoaderProps> = (props) => {
       )}
     </AnimatePresence>,
     document.body
-  );
+  )
 }
 
 export default ScreenLoader

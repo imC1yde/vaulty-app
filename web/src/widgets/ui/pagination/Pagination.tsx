@@ -1,13 +1,13 @@
 import type { FC } from 'react'
 
 interface IPaginationProps {
-  currentPage: number
-  totalPages: number
-  onPageChange: (page: number) => void
+  readonly currentPage: number
+  readonly totalPages: number
+  readonly onPageChange: (page: number) => void
 }
 
 const Pagination: FC<IPaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
-  const pages = [];
+  const pages = []
   for (let i = 1; i <= totalPages; i++) {
     if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
       pages.push(i)
