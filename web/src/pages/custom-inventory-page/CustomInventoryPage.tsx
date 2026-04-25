@@ -39,8 +39,7 @@ const CustomInventoryPage: FC = memo(() => {
           page: currentPage,
           pageSize: pageSize
         }
-      },
-      context: { withCredentials: true }
+      }
     }
   )
 

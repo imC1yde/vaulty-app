@@ -1,0 +1,46 @@
+FROM node:22-alpine AS base
+RUN apk add --no-cache libc6-compat openssl
+RUN npm install -g pnpm
+
+FROM base AS deps
+WORKDIR /app
+COPY web/package.json web/pnpm-lock.yaml ./web/
+COPY server/package.json server/pnpm-lock.yaml ./server/
+RUN cd web && pnpm install --frozen-lockfile
+RUN cd server && pnpm install --frozen-lockfile
+
+FROM deps AS server-builder
+WORKDIR /app/server
+COPY server/ .
+RUN pnpm exec prisma generate
+RUN pnpm run build
+
+FROM deps AS web-builder
+WORKDIR /app/web
+COPY web/ .
+RUN pnpm run build
+
+FROM base AS server
+WORKDIR /app/server
+COPY --from=server-builder /app/server/package.json ./
+COPY --from=server-builder /app/server/node_modules ./node_modules
+COPY --from=server-builder /app/server/dist ./dist
+COPY --from=server-builder /app/server/prisma ./prisma
+
+EXPOSE ${NEST_PORT}
+CMD ["sh", "-c", "pnpm exec prisma migrate deploy && node dist/main.js"]
+
+FROM base AS web
+WORKDIR /app/web
+RUN npm install -g serve
+COPY --from=web-builder /app/web/dist ./dist
+
+EXPOSE ${VITE_PORT}
+CMD ["serve", "-s", "dist", "-l", "5173"]
+
+FROM nginx:alpine AS nginx
+RUN rm -rf /usr/share/nginx/html/*
+COPY ./nginx.prod.conf.template /etc/nginx/templates/default.conf.template
+COPY --from=web-builder /app/web/dist /usr/share/nginx/html
+
+EXPOSE ${NGINX_PORT}

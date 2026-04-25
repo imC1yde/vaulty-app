@@ -6,7 +6,7 @@ const Toast = () => {
   const { toasts, removeToast } = useToastStore()
 
   return (
-    <div className="fixed bottom-5 right-5 z-[100] flex flex-col gap-2">
+    <div className="fixed bottom-5 right-5 z-[200] flex flex-col gap-2">
       <AnimatePresence mode="popLayout">
         {toasts.map((toast) => (
           <motion.div

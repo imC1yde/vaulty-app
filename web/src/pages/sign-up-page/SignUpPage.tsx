@@ -102,10 +102,10 @@ const SignUpPage: FC = () => {
         </div>
 
         <div className="flex flex-col gap-6 items-center w-full mt-4">
-          <h6 className="flex flex-row justify-center items-center text-primary-text/80 text-[10px] uppercase tracking-[0.2em] opacity-60">
+          <h6 className="flex flex-row justify-center items-center text-primary-text/80 text-[6.5px] md:text-[10px] uppercase tracking-[0.2em] opacity-60">
             Уже имеется аккаунт?
             <Link
-              className="ml-2 text-accent font-bold hover:text-softy hover:brightness-200 transition-all underline-offset-4 hover:underline"
+              className="ml-2 text-accent text-[6.5px] md:text[11px] font-bold hover:text-softy hover:brightness-200 transition-all underline-offset-4 hover:underline"
               to={AppRoutes.SIGN_IN}
             >
               Войдите сейчас

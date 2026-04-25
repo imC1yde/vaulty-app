@@ -93,10 +93,10 @@ const SignInPage: FC = () => {
         </div>
 
         <div className="flex flex-col gap-6 items-center w-full mt-4">
-          <h6 className="flex flex-row justify-center items-center text-primary-text/80 text-[10px] uppercase tracking-[0.2em] opacity-60">
+          <h6 className="flex flex-row justify-center items-center text-primary-text/80 text-[8px] md:text-[10px] uppercase tracking-[0.2em] opacity-60">
             Впервые?
             <Link
-              className="ml-2 text-accent font-bold hover:text-softy hover:brightness-200 transition-all underline-offset-4 hover:underline"
+              className="ml-2 text-accent text-[8px] md:text-[10px] font-bold hover:text-softy hover:brightness-200 transition-all underline-offset-4 hover:underline"
               to={AppRoutes.SIGN_UP}
             >
               Создайте аккаунт

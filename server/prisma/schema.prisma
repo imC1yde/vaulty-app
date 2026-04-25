@@ -27,24 +27,25 @@ model User {
 
 // ---------------- CUSTOM INVENTORY --------------------
 model Item {
-  id String @id @unique @default(uuid())
+  id String @id @unique @default(uuid()) @db.Uuid
 
   name        String
   image       String
   description String?
 
-  user   User?   @relation(name: "users-items", fields: [userId], references: [id], onDelete: Cascade)
-  userId String? @map("user_id") @db.Uuid
+  user   User   @relation(name: "users-items", fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id") @db.Uuid
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  @@index([userId])
   @@map("items")
 }
 
 // ---------------- GAME INVENTORY --------------------
 model Game {
-  id String @id @unique @default(uuid()) @db.Uuid()
+  id String @id @unique @default(uuid()) @db.Uuid
 
   rawgId          Int         @unique @map("rawg_id")
   name            String
@@ -53,7 +54,7 @@ model Game {
   backgroundImage String?     @map("background_image")
   rating          Float       @default(0)
   released        DateTime?
-  esrbRating      EsrbRating?
+  esrbRating      EsrbRating? @map("esrb_rating")
   genres          String[]    @default([])
   platforms       String[]    @default([])
 

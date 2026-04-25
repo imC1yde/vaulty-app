@@ -75,10 +75,12 @@ const Header: FC = () => {
               <UserMenu/>
             </>
           ) : (
-            <Button onClick={signUpHandler}>
-              <span className="text-sm font-medium tracking-wide">Войти</span>
-              <LogInIcon size={18}/>
-            </Button>
+            <div className="w-31">
+              <Button onClick={signUpHandler}>
+                <span className="text-sm font-medium tracking-wide">Войти</span>
+                <LogInIcon size={18}/>
+              </Button>
+            </div>
           )
         )}
       </div>

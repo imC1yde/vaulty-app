@@ -54,6 +54,7 @@ export class S3Provider implements OnModuleInit {
   // @returns A unique filename key for stored file
   public async upload(userId: string, stream: ReadStream, filename: string, contentType: string): Promise<string> {
     const key = `${uuidV4()}-${Date.now()}`
+    const encodedName = encodeURIComponent(filename)
 
     const process = new Upload({
       client: this.client,
@@ -64,7 +65,7 @@ export class S3Provider implements OnModuleInit {
         ContentType: contentType,
         Metadata: {
           userId: userId,
-          originFilename: filename
+          originFilename: encodedName
         }
       },
       queueSize: 5,
@@ -169,12 +170,15 @@ export class S3Provider implements OnModuleInit {
             Effect: "Allow",
             Principal: "*",
             Action: [ "s3:GetObject" ],
-            Resource: [ `arn:aws:s3:::${this.bucket}/*` ]
-            // Condition: {
-            //   StringLike: {
-            //     "aws:Referer": this.appConfig.webUrl
-            //   }
-            // }
+            Resource: [ `arn:aws:s3:::${this.bucket}/*` ],
+            Condition: {
+              StringLike: {
+                "aws:Referer": [
+                  `${this.appConfig.webUrl}/*`,
+                  this.appConfig.webUrl
+                ]
+              }
+            }
           }
         ]
       })

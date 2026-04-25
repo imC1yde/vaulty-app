@@ -7,10 +7,8 @@ DC = docker compose -f
 docker\:watch:
 	$(DC) docker-compose.dev.yaml watch
 
-docker\:start:
-	make docker:clean
-
-	$(DC) docker-compose.prod.yaml up
+docker\:prod:
+	$(DC) docker-compose.prod.yaml up --build
 
 docker\:clean:
 	@echo "$(YELLOW)[Docker]:[Clean] Removing all containers$(WHITE)"

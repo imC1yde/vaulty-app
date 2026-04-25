@@ -1,7 +1,6 @@
 import { Field, Float, InputType } from '@nestjs/graphql'
-import { EsrbRating } from '@src/common/enums/esrb-rating.enum'
 import { type Nullable } from '@src/common/utilities/nullable.util'
-import { IsArray, IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
+import { IsArray, IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator'
 
 @InputType()
 export class GetAllGamesFilterInput {
@@ -32,8 +31,8 @@ export class GetAllGamesFilterInput {
   @Field(() => [ String ], { nullable: true })
   readonly platforms: Nullable<string[]>
 
-  @IsEnum(EsrbRating)
+  @IsString()
   @IsOptional()
-  @Field(() => EsrbRating, { nullable: true })
-  readonly esrbRating: Nullable<EsrbRating>
+  @Field(() => String, { nullable: true })
+  readonly esrbRating: Nullable<string>
 }

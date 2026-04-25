@@ -47,8 +47,8 @@ export class RawgDomainService {
     return {
       data: mapRawgList(data.results),
       totalCount: data.count,
-      totalPages: totalPages <= 1000 ? totalPages : 1000,
-      hasNextPage: (!!data.next) && totalPages <= 1000
+      totalPages: totalPages <= 80 ? totalPages : 80,
+      hasNextPage: (!!data.next) && totalPages <= 80
     }
   }
 

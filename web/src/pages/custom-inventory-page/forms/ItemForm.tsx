@@ -86,7 +86,7 @@ const ItemForm: FC<ICreateItemFormProps> = ({ isUpdate, initialData, onSuccess, 
       </div>
 
       <div className="flex flex-col gap-2">
-        <Field.Label>Описание предмета</Field.Label>
+        <Field.Label>Изображение предмета</Field.Label>
         <Field.File
           registry={mutationForm.form.register('image')}
           error={mutationForm.form.formState.errors.image}

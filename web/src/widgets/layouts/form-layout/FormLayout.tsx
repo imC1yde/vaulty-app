@@ -26,19 +26,19 @@ const FormLayout: FC<IFormLayoutProps> = ({ children, heading }) => {
       <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-20">
         <MenuButton
           onClick={buttonHandler}
-          className="bg-transparent border-none outline-none shadow-none text-primary-text/40 hover:text-primary-text/90
-          hover:bg-white/7 transition-all duration-300 px-4 py-2 rounded-lg"
+          className="!bg-transparent border-none outline-none shadow-none text-primary-text/40 hover:text-primary-text/90
+        hover:bg-white/7 transition-all duration-300 px-2 pr-3 py-2 rounded-lg !w-fit !max-w-none"
         >
-          <div className="flex items-center gap-2 leading-none">
+          <div className="flex items-center gap-2 leading-none whitespace-nowrap">
             <MoveLeft className="w-4 h-4 sm:w-5 sm:h-5"/>
-            <span className="text-[13px] sm:text-[15px] font-medium tracking-[0.06em] capitalize">На главную</span>
+            <span className="text-[13px] sm:text-[15px] font-medium tracking-[0.06em] capitalize overflow-y-hidden">На главную</span>
           </div>
         </MenuButton>
       </div>
 
       <div className="flex flex-col items-center w-full px-4 max-w-2xl">
 
-        <h1 className="mb-12 text-4xl md:text-5xl font-semibold tracking-wide text-primary-text/90 capitalize">
+        <h1 className="mb-12 text-4xl md:text-5xl font-semibold tracking-wide text-primary-text/90 capitalize overflow-hidden">
           {heading}
         </h1>
 

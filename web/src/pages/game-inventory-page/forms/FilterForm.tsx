@@ -1,3 +1,4 @@
+import { EsrbRating } from '@src/common/enums/esrb-rating.enum.ts'
 import RemoteSelector from '@src/pages/game-inventory-page/components/RemoteSelector.tsx'
 import type { GameFilterSchema } from '@src/pages/game-inventory-page/schemas/game-filter.schema.ts'
 import Modal from '@src/widgets/modals/Modal.tsx'
@@ -131,11 +132,11 @@ const FilterForm: FC<IFilterFormProps> = ({ isOpen, onClose, currentFilters, onA
               placeholder="Любой рейтинг"
             >
               <Field.Option value="">Любой</Field.Option>
-              <Field.Option value="Everyone">Everyone</Field.Option>
-              <Field.Option value="Everyone 10+">Everyone 10+</Field.Option>
-              <Field.Option value="Teen">Teen</Field.Option>
-              <Field.Option value="Mature">Mature</Field.Option>
-              <Field.Option value="Adults Only">Adults Only</Field.Option>
+              <Field.Option value={EsrbRating.EVERYONE}>Everyone</Field.Option>
+              <Field.Option value={EsrbRating.EVERYONE_10_PLUS}>Everyone 10+</Field.Option>
+              <Field.Option value={EsrbRating.TEEN}>Teen</Field.Option>
+              <Field.Option value={EsrbRating.MATURE}>Mature</Field.Option>
+              <Field.Option value={EsrbRating.ADULTS_ONLY}>Adults Only</Field.Option>
             </Field.SelectGroup>
           </div>
 

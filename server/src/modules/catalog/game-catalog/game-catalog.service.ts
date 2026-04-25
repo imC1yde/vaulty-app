@@ -23,7 +23,7 @@ export class GameCatalogService {
   public async create(userId: string, input: CreateGameInput): Promise<Game> {
     const platforms = mapArray(input.platforms)
     const genres = mapArray(input.genres)
-    const released = input.released ? input.released + 'T00:00:00.000Z' : null
+    const released = input.released ? new Date(input.released) : null
     const esrbRating = input.esrbRating ? mapEsrbToPrisma(input.esrbRating as string) : null
 
     const game = await this.prisma.game.upsert({
@@ -129,7 +129,7 @@ export class GameCatalogService {
   }
 
   public async getById(userId: string, id: string): Promise<Nullable<Game>> {
-    return await this.redis.wrap<Nullable<Game>>(
+    const res = await this.redis.wrap<Nullable<Game>>(
       RedisService.Keys.GAME.SINGLE(id),
       async () => {
         const inventory = await this.prisma.gameInventory.findUnique({
@@ -155,6 +155,11 @@ export class GameCatalogService {
         })
       }
     )
+
+    return res ? {
+      ...res,
+      released: res?.released ? new Date(res.released) : null
+    } : null
   }
 
   public async update(userId: string, input: UpdateGameInput): Promise<Game> {

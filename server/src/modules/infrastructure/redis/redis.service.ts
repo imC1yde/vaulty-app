@@ -15,17 +15,17 @@ export class RedisService implements OnModuleInit {
 
   public static readonly Keys = {
     RAWG: {
-      PLATFORMS: (input: Object) => `rawg:platforms:${this.generatePaginationHash(input)}`,
-      GENRES: (input: Object) => `rawg:genres:${this.generatePaginationHash(input)}`,
+      PLATFORMS: (input: Object) => `rawg:platforms:${RedisService.generatePaginationHash(input)}`,
+      GENRES: (input: Object) => `rawg:genres:${RedisService.generatePaginationHash(input)}`,
       GAME: (id: number) => `rawg:games:${id}`,
-      GAMES: (input: Object) => `rawg:games:${this.generatePaginationHash(input)}`
+      GAMES: (input: Object) => `rawg:games:${RedisService.generatePaginationHash(input)}`
     },
     GAME: {
-      ALL: (input: Object) => `catalog:games:${this.generatePaginationHash(input)}`,
+      ALL: (input: Object) => `catalog:games:${RedisService.generatePaginationHash(input)}`,
       SINGLE: (id: string) => `catalog:games:${id}`
     },
     ITEMS: {
-      ALL: (input: Object) => `catalog:items:${this.generatePaginationHash(input)}`,
+      ALL: (input: Object) => `catalog:items:${RedisService.generatePaginationHash(input)}`,
       SINGLE: (id: string) => `catalog:items:${id}`
     },
     USER: {
@@ -59,7 +59,7 @@ export class RedisService implements OnModuleInit {
     return result
   }
 
-  private generatePaginationHash(args: Object): string {
+  private static generatePaginationHash(args: Object): string {
     const sortedArgs = Object.keys(args)
       .sort()
       .reduce((acc, key) => {

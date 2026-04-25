@@ -20,7 +20,7 @@ const DotLoader: FC = () => {
             delay: i * 0.15,
             ease: "easeInOut"
           }}
-          className="w-1.5 h-1.5 bg-current rounded-[2px]"
+          className="w-1 h-1 bg-muted-text rounded-[2px]"
         />
       ))}
     </div>

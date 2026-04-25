@@ -9,7 +9,7 @@ export const mapGame = ({ data, isCompleted }: any) => {
     description: data?.description,
     backgroundImage: data?.backgroundImage,
     rating: data.rating,
-    released: data?.released,
+    released: data.released ? new Date(data.released) : null,
     esrbRating: data?.esrbRating,
     genres: data.genres,
     platforms: data.platforms

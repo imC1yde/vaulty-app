@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client/react"
+import { EsrbRating } from '@src/common/enums/esrb-rating.enum.ts'
 import { ToastType } from "@src/common/enums/toast-type.enum"
 import { GameInventoryRequest } from "@src/core/features/requests/game-inventory.request"
 import { useToastStore } from '@src/core/stores/toast.store.ts'
@@ -60,6 +61,7 @@ const GameDetails: FC<IGameDetailsProps> = ({ gameId, isOpen, onClose, currentPa
 
   const game = data?.getGameById
   if (loading || !game) return <div className="flex justify-center p-10"><ClipLoader color="#3b82f6"/></div>
+  console.log(game?.esrbRating, game?.released)
 
   return (
     <Modal
@@ -114,11 +116,11 @@ const GameDetails: FC<IGameDetailsProps> = ({ gameId, isOpen, onClose, currentPa
             <div className="grid grid-cols-2 gap-4 text-xs">
               <div className="space-y-1">
                 <span className="text-faded-text/60 uppercase tracking-widest">Дата релиза</span>
-                <p className="text-white font-medium">{game.released ? new Date(game.released).toLocaleDateString() : '—'}</p>
+                <p className="text-white font-medium">{game.released ? new Date(game.released).toLocaleDateString() : 'Нет данных'}</p>
               </div>
               <div className="space-y-1">
                 <span className="text-faded-text/60 uppercase tracking-widest">ESRB Рейтинг</span>
-                <p className="text-white font-medium">{game.esrbRating || 'Not Rated'}</p>
+                <p className="text-white font-medium">{game?.esrbRating ? EsrbRating[game?.esrbRating as keyof typeof EsrbRating] : 'Без рейтинга'}</p>
               </div>
             </div>
 
