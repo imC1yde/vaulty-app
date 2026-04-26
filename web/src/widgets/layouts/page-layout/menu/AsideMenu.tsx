@@ -63,7 +63,12 @@ const AsideMenu: FC<IAsideMenuProps> = memo((props) => {
         clearProfile()
         addToast('Прощайте!', ToastType.INFO)
       }
-    }
+    },
+    mapVariables: (data) => ({
+      input: {
+        password: data.password
+      }
+    })
   })
 
   const isLoading = updateUsername.mutationResult.loading || deleteAccount.mutationResult.loading || logoutLoading
@@ -130,7 +135,7 @@ const AsideMenu: FC<IAsideMenuProps> = memo((props) => {
                       <Field.Input
                         error={updateUsername.form.formState.errors.username}
                         registry={updateUsername.form.register('username')}
-                        placeholder="имя пользователя"
+                        placeholder="Новое имя"
                         className="h-full w-full bg-primary-bg/40 focus:border-accent/40 transition-all"
                       />
                     </div>
@@ -166,7 +171,7 @@ const AsideMenu: FC<IAsideMenuProps> = memo((props) => {
                 ) : (
                   <form onSubmit={deleteAccount.onSubmit} className="animate-in slide-in-from-right-2 space-y-4">
                     <div className="space-y-1.5">
-                      <Field.Label>Подтвердите удалени паролем</Field.Label>
+                      <Field.Label>Подтвердите удаление паролем</Field.Label>
                       <Field.Input
                         type="password"
                         error={deleteAccount.form.formState.errors.password}

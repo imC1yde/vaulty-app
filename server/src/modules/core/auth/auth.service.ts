@@ -40,7 +40,7 @@ export class AuthService {
 
       return user
     } catch (error) {
-      throw new ConflictException('User already exists')
+      throw new ConflictException('Пользователь уже существует')
     }
   }
 
@@ -51,10 +51,10 @@ export class AuthService {
     const { email, password } = input
 
     const user = await this.userService.getForAuth(email)
-    if (!user) throw new UnauthorizedException("Invalid email or password")
+    if (!user) throw new UnauthorizedException("Неверная почта или пароль")
 
     const isAuthentified = await this.authenticate(user, password)
-    if (!isAuthentified) throw new UnauthorizedException("Invalid email or password")
+    if (!isAuthentified) throw new UnauthorizedException("Неверная почта или пароль")
 
     const token = await this.jwtService.signAsync({
       sub: user.id,

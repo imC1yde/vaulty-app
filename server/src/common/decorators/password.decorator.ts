@@ -11,17 +11,18 @@ const PASSWORD_SETTINGS = {
   minLowercase: 1,
   minUppercase: 1,
   minNumbers: 1,
-  minSymbols: 1
+  minSymbols: 1,
+  maxLength: 32
 }
 
 @ValidatorConstraint({ name: 'Password', async: false })
 class PasswordConstraint implements ValidatorConstraintInterface {
   validate(value: any) {
-    return typeof value === 'string' && isStrongPassword(value, PASSWORD_SETTINGS);
+    return typeof value === 'string' && isStrongPassword(value, PASSWORD_SETTINGS)
   }
 
   defaultMessage() {
-    return 'Password is too weak (8+ chars, incl. Upper, Lower, Num, Symbol)';
+    return 'Пароль слишком уязвим'
   }
 }
 

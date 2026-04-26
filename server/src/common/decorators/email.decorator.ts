@@ -14,7 +14,7 @@ class EmailConstraint implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return 'Email format is invalid'
+    return 'Неверный формат email'
   }
 }
 

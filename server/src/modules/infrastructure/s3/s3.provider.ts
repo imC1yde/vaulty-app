@@ -78,7 +78,7 @@ export class S3Provider implements OnModuleInit {
 
       return key
     } catch (error) {
-      throw new BadRequestException(`File has not uploaded!`)
+      throw new BadRequestException(`Файл не был загружен`)
     }
   }
 
@@ -119,7 +119,7 @@ export class S3Provider implements OnModuleInit {
 
       return true
     } catch (error) {
-      throw new NotFoundException(`File has not found to update!`)
+      throw new NotFoundException(`Файл не был обновлен`)
     }
   }
 
@@ -135,7 +135,7 @@ export class S3Provider implements OnModuleInit {
 
       return true
     } catch (error) {
-      throw new NotFoundException(`File has not found to delete!`)
+      throw new NotFoundException(`Файл не найден`)
     }
   }
 
@@ -187,7 +187,7 @@ export class S3Provider implements OnModuleInit {
     try {
       await this.client.send(command)
     } catch (error) {
-      throw new InternalServerErrorException(`Policy has not been sent!`)
+      throw new InternalServerErrorException(`CSP не была отправлена`)
     }
   }
 }

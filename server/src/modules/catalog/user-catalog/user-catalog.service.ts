@@ -147,7 +147,7 @@ export class UserCatalogService {
 
       return item
     } catch (error) {
-      throw new NotFoundException(`Item not found`)
+      throw new NotFoundException(`Предмет не найден`)
     }
   }
 
@@ -172,7 +172,7 @@ export class UserCatalogService {
 
       return item
     } catch (error) {
-      throw new NotFoundException(`Item not found`)
+      throw new NotFoundException(`Предмет не найден`)
     }
   }
 }

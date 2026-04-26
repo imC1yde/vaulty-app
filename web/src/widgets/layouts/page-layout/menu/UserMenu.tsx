@@ -62,7 +62,12 @@ const UserMenu: FC = () => {
         clearProfile()
         addToast('Аккаунт успешно удален!', ToastType.INFO)
       }
-    }
+    },
+    mapVariables: (data) => ({
+      input: {
+        password: data.password
+      }
+    })
   })
 
   const isLoading = updateUsername.mutationResult.loading || deleteAccount.mutationResult.loading || logoutLoading
@@ -94,7 +99,7 @@ const UserMenu: FC = () => {
                       <Field.Input
                         error={updateUsername.form.formState.errors.username}
                         registry={updateUsername.form.register('username')}
-                        placeholder="bestest user"
+                        placeholder="Новое имя"
                         className="h-full bg-primary-bg/40 focus:border-accent/40 transition-all"
                       />
                     </div>
