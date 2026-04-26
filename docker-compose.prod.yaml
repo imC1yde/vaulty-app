@@ -70,7 +70,7 @@ services:
     container_name: vaulty_server
     restart: always
     env_file:
-      - .env
+      - .env.prod
     environment:
       NODE_ENV: production
     depends_on:
@@ -88,7 +88,7 @@ services:
     container_name: vaulty_web
     restart: always
     env_file:
-      - .env
+      - .env.prod
     networks:
       - app_network
 
