@@ -25,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: any): Promise<IUserPayload> {
-    if (!payload.sub) throw new UnauthorizedException('[Log]:[JwtStrategy] No token provided [Error]')
+    if (!payload.sub) throw new UnauthorizedException('Токен авторизации не предоставлен')
     return { sub: payload.sub }
   }
 }

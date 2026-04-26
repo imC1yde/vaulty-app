@@ -11,7 +11,7 @@ datasource db {
 // ---------------- USER --------------------
 model User {
   id       String  @id @unique @default(uuid()) @db.Uuid
-  username String?
+  username String? @db.VarChar(32)
   email    String  @unique
   password String
 
@@ -29,9 +29,9 @@ model User {
 model Item {
   id String @id @unique @default(uuid()) @db.Uuid
 
-  name        String
+  name        String  @db.VarChar(128)
   image       String
-  description String?
+  description String? @db.VarChar(1024)
 
   user   User   @relation(name: "users-items", fields: [userId], references: [id], onDelete: Cascade)
   userId String @map("user_id") @db.Uuid

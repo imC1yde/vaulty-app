@@ -8,7 +8,7 @@ export class IdPipe implements PipeTransform {
     const isAutoId = !isNaN(parseInt(value)) && isInt(parseInt(value)) && parseInt(value) > 0
 
     if (!isValidUUID && !isAutoId)
-      throw new BadRequestException(`Invalid ID format: "${value}". Expected UUID or Integer.`)
+      throw new BadRequestException(`Невалидный формат ID: "${value}". Ожидался UUID или целочисленный.`)
 
     return isValidUUID ? value : parseInt(value)
   }

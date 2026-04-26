@@ -19,7 +19,7 @@ export class RawgClient {
   ) {}
 
   public getData<TData>(url: string, requestConfig: AxiosRequestConfig, requestOptions?: IRequestOptions): Observable<TData> {
-    if (!requestConfig.params.key) throw new BadRequestException('Key must be provided')
+    if (!requestConfig.params.key) throw new BadRequestException('Секрет не предоставлен')
 
     return this.httpService
       .get(url, requestConfig)
@@ -32,13 +32,13 @@ export class RawgClient {
 
           switch (status) {
             case 404:
-              throw new NotFoundException('Content not found by URL')
+              throw new NotFoundException('Контент не найден')
             case 401:
-              throw new UnauthorizedException('Not authorized')
+              throw new UnauthorizedException('Вы не авторизированы')
             case 403:
-              throw new ForbiddenException('Access is prohibited')
+              throw new ForbiddenException('Доступ воспрещен')
             default:
-              throw new InternalServerErrorException('Server error')
+              throw new InternalServerErrorException('Ошибка сервера')
           }
         })
       )

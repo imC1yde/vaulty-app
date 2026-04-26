@@ -19,7 +19,7 @@ export class UserService {
 
   public async getForAuth(email: string): Promise<Nullable<UserForAuth>> {
     const user = await this.getByEmail({ email: email })
-    if (!user) throw new NotFoundException('User does not exist')
+    if (!user) throw new NotFoundException('Пользователя не существует')
 
     const password = (await this.getUserPassword(user.id))!
 
@@ -93,16 +93,16 @@ export class UserService {
 
       return user
     } catch (error) {
-      throw new NotFoundException(`User not found`)
+      throw new NotFoundException(`Пользователя не существует`)
     }
   }
 
   public async delete(id: string, input: DeleteUserInput): Promise<User> {
     const hashed = await this.getUserPassword(id)
-    if (!hashed) throw new NotFoundException(`User not found`)
+    if (!hashed) throw new NotFoundException(`Пользователя не существует`)
 
     const isValid = await verify(hashed, input.password)
-    if (!isValid) throw new ForbiddenException('Access Denied. Passwords does not match')
+    if (!isValid) throw new ForbiddenException('Доступ воспрещен. Пароли не совпадают')
 
     try {
       const user = await this.prisma.user.delete({
@@ -120,7 +120,7 @@ export class UserService {
 
       return user
     } catch (error) {
-      throw new NotFoundException(`User not found`)
+      throw new NotFoundException(`Пользователя не существует`)
     }
   }
 

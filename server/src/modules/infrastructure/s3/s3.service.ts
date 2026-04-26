@@ -13,7 +13,7 @@ export class S3Service {
     const stream: ReadStream = createReadStream()
 
     if (!this.validateFile(mimetype, 'image'))
-      throw new BadRequestException('Invalid file mimetype!')
+      throw new BadRequestException('Неверный формат файла')
 
     const key = await this.s3.upload(userId, stream, filename, mimetype)
 
@@ -31,7 +31,7 @@ export class S3Service {
     const stream: ReadStream = createReadStream()
 
     if (!this.validateFile(mimetype, 'image'))
-      throw new BadRequestException('Invalid file mimetype!')
+      throw new BadRequestException('Неверный формат файла')
 
     return await this.s3.update(stream, key, mimetype)
   }
